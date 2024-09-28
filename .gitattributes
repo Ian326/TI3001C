@@ -1,1 +1,2 @@
 *.ipynb filter=strip-notebook-output
+*.ipynb filter=nbstrip_full
