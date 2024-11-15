@@ -1,6 +1,6 @@
 *.csv
 *.xlsx
-*.hmtl
+*.html
 website/node_modules/
 website/*.pnp
 website/*.pnp.js
