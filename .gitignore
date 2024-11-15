@@ -1,4 +1,7 @@
-vista_repdetail_tec.csv
 *.csv
 *.xlsx
 *.hmtl
+website/node_modules/
+website/*.pnp
+website/*.pnp.js
+website/package-lock.json
