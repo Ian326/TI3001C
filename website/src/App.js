@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import {Routes, Route, useLocation } from 'react-router-dom';
+import NavBarJSX from './components/common/Navbar';
+import HomeJSX from './pages/Home';
+import InsightsJSX from './pages/Insights';
+import GraphicsJSX from './pages/Graphics';
+import NotFoundJSX from './pages/NotFound';
+import { useTitle } from './hooks/useTitle';
 
 function App() {
+  let location = useLocation();
+  useTitle(location.pathname);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBarJSX/>
+
+      <Routes>
+
+        <Route path="/"         element={<HomeJSX />}     />
+        <Route path="/insights" element={<InsightsJSX />} />
+        <Route path="/graphics" element={<GraphicsJSX />} />
+        <Route path='*'         element={<NotFoundJSX />} />
+
+      </Routes> 
+
+    </>   
   );
 }
 

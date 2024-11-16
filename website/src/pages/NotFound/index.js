@@ -5,17 +5,12 @@ const NotFoundPage = () => {
   return (
     <div
       style={{
-        width: '100vw',
-        height: '100vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        top: 0,
-        left: 0,
       }}
     >
-      <Lottie animationData={NotFoundAnimation} play loop style={{ width: 800, height: 800 }} />
+      <Lottie animationData={NotFoundAnimation} play={true} loop={true} style={{ width: 800, height: 800 }} />
     </div>
   );
 };
