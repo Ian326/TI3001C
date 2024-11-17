@@ -1,7 +1,7 @@
 import Lottie from 'react-lottie-player';
 import NotFoundAnimation from '../../assets/not-found.json';
 
-const NotFoundPage = () => {
+const NotFoundJSX = () => {
   return (
     <div
       style={{
@@ -15,4 +15,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default NotFoundJSX;

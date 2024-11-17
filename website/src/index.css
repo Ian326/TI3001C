@@ -22,7 +22,9 @@ code {
 
 
 nav {
-  background-color: rgb(120, 136, 175);
+  background-color: rgb(255, 255, 255);
+  border-bottom-color: rgb(12, 35, 64);
+  border-width: 1px;
   padding: 1rem;
 }
 
@@ -66,7 +68,33 @@ p {
   font-size: 2rem;
   content: 'SAYER FULL';
   position: absolute;
-  top: -0.08rem;  /* Adjust to control shadow offset */
-  left: 0.08rem;
-  color: #0c2340; /* Yellow shadow color 0c2340 */
+  top: -0.1rem;  /* Adjust to control shadow offset */
+  left: 0.15rem;
+  color: rgb(12, 35, 64); /* Yellow shadow color 0c2340 */
+}
+
+.item-title {
+  border-left-color: rgb(12, 35, 64);
+  border-left-width: 1px;
+  padding-left: 1rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+.item-title:hover {
+  color: rgb(255, 0, 0);
+  border-left-color: rgb(255, 0, 0);
+  border-left-width: 3px;
+  font-weight: 600;
+}
+
+/* .testingSection {
+  min-height: 100vh;
+} */
+
+.active {
+  color: rgb(12, 35, 64);
+  border-left-color: rgb(12, 35, 64);
+  border-left-width: 3px;
+  font-weight: 700;
 }
