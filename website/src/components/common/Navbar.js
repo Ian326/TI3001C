@@ -16,7 +16,7 @@ const NavBarJSX = () => {
           <a href="#">
             <img src={logo} alt="Logo" className="h-[64px]" />
           </a>
-          <p className="sayer-full pr-2 shrink-0 invisible md:visible">SAYER FULL</p>
+          <div className="sayer-full pr-2 shrink-0 invisible md:visible">SAYER FULL</div>
         </div>
       
         <div className="flex grow justify-between md:justify-end space-x-8 mx-6">

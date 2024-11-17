@@ -26,6 +26,7 @@ nav {
   border-bottom-color: rgb(12, 35, 64);
   border-width: 1px;
   padding: 1rem;
+  will-change: transform; /* Optimize for smoother scrolling */
 }
 
 
@@ -39,6 +40,7 @@ h1 {
 p {
   font-size: 1.1rem;
   line-height: 1.5;
+  margin-bottom: 1rem;
 }
 
 
@@ -88,11 +90,8 @@ p {
   font-weight: 600;
 }
 
-/* .testingSection {
-  min-height: 100vh;
-} */
 
-.active {
+.activeTitle {
   color: rgb(12, 35, 64);
   border-left-color: rgb(12, 35, 64);
   border-left-width: 3px;

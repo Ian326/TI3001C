@@ -9,11 +9,12 @@ const TestingJSX = () => {
     const allSections = Array.from(document.querySelectorAll("section"));
     setSections(allSections);
 
+    // Function to handle scroll event (To highlight the active section)
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
 
       allSections.forEach((section) => {
-        const offsetTop = section.offsetTop;
+        const offsetTop = section.offsetTop - 200;
         const offsetHeight = section.offsetHeight;
         const id = section.getAttribute("id");
 
@@ -35,6 +36,23 @@ const TestingJSX = () => {
     };
   }, []);
 
+  // Function to determine yOffset based on screen size
+  const getYOffset = () => {
+    if (window.innerWidth >= 768) { // Tailwind's 'md:' breakpoint (768px)
+      return -100;
+    }
+    return -150; // Default for smaller screens
+  };
+
+  // Function to handle the click event on the navigation links
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    const target = document.getElementById(id);
+    const yOffset = getYOffset(); // Adjust based on your navbar height
+    const y = target.getBoundingClientRect().top + window.scrollY + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  };
+
   return (
     <div className="flex">
       <div className="flex flex-col w-1/12 p-2 pt-8 fixed" id="navegacion">
@@ -44,7 +62,8 @@ const TestingJSX = () => {
             <a
               key={id}
               href={`#${id}`}
-              className={`item-title ${activeSection === id ? "active" : ""}`}
+              onClick={(e) => handleClick(e, id)}
+              className={`item-title ${activeSection === id ? "activeTitle" : ""}`}
             >
               {id}
             </a>
