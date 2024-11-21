@@ -4,7 +4,6 @@ import HomeJSX from './pages/Home';
 import InsightsJSX from './pages/Insights';
 import GraphicsJSX from './pages/Graphics';
 import NotFoundJSX from './pages/NotFound';
-import TestingJSX from './pages/Testing';
 import { useTitle } from './hooks/useTitle';
 
 function App() {
@@ -13,14 +12,14 @@ function App() {
 
   return (
     <div className="main-content">
+      
       <NavBarJSX/>
 
       <Routes>
 
-        <Route path="/"         element={<HomeJSX />}     />
+        <Route path="/"         element={<HomeJSX     />} />
         <Route path="/insights" element={<InsightsJSX />} />
         <Route path="/graphics" element={<GraphicsJSX />} />
-        <Route path="/testing"  element={<TestingJSX />} />
         <Route path='*'         element={<NotFoundJSX />} />
 
       </Routes> 
