@@ -1,7 +1,7 @@
 const getYOffset = () => {
     // Adjust the offset according to the screen size
     if (window.innerWidth >= 768) {
-        return -100;
+        return -110;
     }
     return -150;
 };
