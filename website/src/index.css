@@ -57,6 +57,17 @@ p {
   }
 }
 
+/* App.css */
+.main-content {
+  padding-top: 98px;
+}
+
+@media (max-width: 500px) {
+  .main-content {
+    padding-top: 126px;
+  }
+}
+
 
 .sayer-full {
   font-size: 2rem;

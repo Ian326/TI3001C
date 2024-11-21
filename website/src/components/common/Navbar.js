@@ -10,13 +10,13 @@ const NavBarJSX = () => {
   }
 
   return (
-    <nav className="text-xl md:text-2xl sticky top-0">
+    <nav className="fixed top-0 w-full text-xl md:text-2xl">
       <div className="flex flex-wrap justify-center items-center">
         <div className="flex items-center space-x-8">
           <a href="#">
             <img src={logo} alt="Logo" className="h-[64px]" />
           </a>
-          <div className="sayer-full pr-2 shrink-0 hidden invisible md:visible md:inline-block">SAYER FULL</div>
+          <div className="sayer-full pr-2 shrink-0 hidden md:visible md:inline-block">SAYER FULL</div>
         </div>
       
         <div className="flex grow justify-between sm:justify-end space-x-8 mx-6">

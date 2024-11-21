@@ -12,7 +12,7 @@ function App() {
   useTitle(location.pathname);
 
   return (
-    <>
+    <div className="main-content">
       <NavBarJSX/>
 
       <Routes>
@@ -25,7 +25,7 @@ function App() {
 
       </Routes> 
 
-    </>   
+    </div>   
   );
 }
 
