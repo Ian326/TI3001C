@@ -8,6 +8,7 @@ nav {
   border-bottom-color: rgb(12, 35, 64);
   border-width: 1px;
   padding: 1rem;
+  box-sizing: border-box;
   will-change: transform; 
 }
 
@@ -108,6 +109,13 @@ h2 {
   margin-bottom: 2rem;
 }
 
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 a {
   color: rgb(21, 18, 59);
   text-decoration: none;
@@ -130,6 +138,18 @@ p {
 @media (max-width: 550px) {
   p {
     font-size: 0.8rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  h3 {
+    font-size: 0.9rem;
   }
 }
 

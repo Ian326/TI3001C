@@ -2,10 +2,45 @@ import React from "react";
 import SidebarJSX from "../../components/common/Sidebar";
 import { DrawerJSX, handleDrawerToggle } from "../../components/common/SidebarDrawer";
 import { useNavigation } from "../../hooks/useNavigationBar";
+import TableJSX from "../../hooks/createTable";
 import logo from "../../assets/tdr-logo.png";
+import logo2 from "../../assets/tdr-logo2.png";
+import tracto from "../../assets/tdr-tracto.png";
 
 const HomeJSX = () => {
   const { activeSection, sections } = useNavigation();
+
+  const table1 = {
+    "Supuesto crecimiento 2025": ['Tasa de inflación 2025 C1',
+      'Tasa de inflación 2025 C2',
+      'Tasa de inflación 2025 C3',
+      'Incremento precios refacciones',
+      'Volatilidad del Precio del Combustible',
+      'Tasa crecimiento sector pintura'
+    ],
+    "Estimado": ['3.55 %',
+      '3.94 %',
+      '4.33 %',
+      '5.17 %',
+      '4.50 %',
+      '1.32 %'
+    ],
+  };
+
+  const table2 = {
+    "Fecha": [
+      '2025 C1',
+      '2025 C2',
+      '2025 C3',
+      'TOTAL'
+    ],
+    "Estimado": [
+      '700,543.84',
+      '1,042,924.66',
+      '891,289.74',
+      '2,634,758.24'
+    ],
+  };
 
   return (
     <div className="flex">
@@ -31,9 +66,9 @@ const HomeJSX = () => {
 
           <div className="p-6 bg-neutral-50 rounded-md text-justify">
 
-            <div className="flex flex-col lg:flex-row items-center">
-              <img className="w-1/2 h-auto p-8" src={logo} alt="TDR_logo" />
-              <img className="w-1/2 h-auto p-8" src={logo} alt="TDR_logo" />
+            <div className="flex flex-row items-center">
+              <img className="w-1/2 h-auto" src={tracto} alt="TDR_logo" />
+              <img className="w-1/2 h-auto" src={logo2} alt="TDR_logo" />
             </div>
 
 
@@ -49,13 +84,13 @@ const HomeJSX = () => {
           </div>
 
           <div className="p-6 bg-neutral-50 rounded-md text-justify">
-            <h2>
-              Tansformando Costos en Oportunidades: Cuantificacion de los
+            <h2 className="mb-2">
+              Transformando Costos en Oportunidades: Cuantificacion de los
               Beneficios Econonmicos del Mantenimiento Predictivo
             </h2>
 
             <div className="flex flex-col lg:flex-row items-center">
-              <p className="p-4 w-1/2">
+              <p className="lg:w-1/2">
                 A continuación se presenta una estimación de los costos de
                 mantenimiento predictivo para los tres cuatrimestres de 2025. Para
                 ello, se consideraron supuestos como la tasa de inflación
@@ -65,7 +100,19 @@ const HomeJSX = () => {
                 México, dado que nuestro proyecto, Sayer Full, se dedica a
                 transportar exclusivamente cargamentos de pintura.
               </p>
-              <img className="w-1/2 h-auto p-8" src={logo} alt="TDR_logo" />
+
+              
+              <div className="lg:w-full px-8 pb-8">
+                <h3 className="text-center sm:text-justify">
+                  Proyeccion de Costos de Mantenimiento 2025
+                </h3>
+                <TableJSX data={table1} />
+                
+                <h3 className="text-center sm:text-justify"> 
+                  Costos de Mantenimiento 2025
+                </h3>
+                <TableJSX data={table2} />
+              </div>
             </div>
           </div>
         </section>
