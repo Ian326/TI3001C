@@ -1,12 +1,65 @@
 import React from "react";
 import SidebarJSX from "../../components/common/Sidebar";
 import {DrawerJSX, handleDrawerToggle} from "../../components/common/SidebarDrawer";
+import TableJSX from "../../hooks/createTable";
 import { useNavigation } from "../../hooks/useNavigationBar";
 import logo from "../../assets/tdr-logo.png";
 
 const InsightsJSX = () => {
 
     const { activeSection, sections } = useNavigation();
+
+    const table1 = {
+        "Unit Type": [
+            'Dolly',
+            'Tracto',
+            'Trailer',
+        ],
+        "Total (Promedio / Reparacion)": [
+            '$ 2,058.12',
+            '$ 5,504.39',
+            '$ 1,786.76',
+        ],
+    };
+
+    const table2 = {
+        "Unit Type": [
+            'Dolly',
+            'Tracto',
+            'Trailer',
+        ],
+        "Frecuencia de Mantenimientos Correctivos": [
+            '207',
+            '408',
+            '368',
+        ],
+        "Porcentaje de los Mantenimientos Correctivos": [
+            '21.14 %',
+            '41.67 %',
+            '37.18 %',
+        ],
+    };
+
+    const table3 = {
+        "Descripcion Pieza": [
+            'Sensor de temperatura, aire y presión EDT-PAI',
+            'Kit 10 Sensores Tpms Autel (presión llantas)',
+            'UNIVERSAL TESTER PARA SENSORES CAMIOI TOTAL',
+            'TOTAL',
+        ],
+        "Precio Unitario": [
+            '$1,790.05',
+            '$ 442.15',
+            '$ 52,012.58',
+            '$ 54,244.78',
+        ],
+        "Costo por flota": [
+            '$ 12,530.35',
+            '$ 3,095.08',
+            '$ 223,654.09',
+            '$ 239,279.52',
+        ],
+    };
 
     return (
         <div className="flex">
@@ -89,8 +142,10 @@ const InsightsJSX = () => {
                             Respuesta: Sí, los costos de mantenimiento son los siguientes:
                         </p>
 
-                        <div className="flex justify-center">
-                            <img className="w-2/5 p-8" src={logo} alt="TDR_logo" />
+                        <div className="flex justify-center px-8">
+                            <div className="w-[75%]">
+                                <TableJSX data={table1} />
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -124,8 +179,10 @@ const InsightsJSX = () => {
                             Respuesta: Sí
                         </p>
 
-                        <div className="flex justify-center">
-                            <img className="w-2/5 p-8" src={logo} alt="TDR_logo" />
+                        <div className="flex justify-center px-8">
+                            <div className="w-[75%]">
+                                <TableJSX data={table2} />
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -162,8 +219,10 @@ const InsightsJSX = () => {
                             Respuesta: Sí, los costos de mantenimiento son los siguientes:
                         </p>
 
-                        <div className="flex justify-center">
-                            <img className="w-2/5 p-8" src={logo} alt="TDR_logo" />
+                        <div className="flex justify-center px-8">
+                            <div className="w-[75%]">
+                                <TableJSX data={table3} />
+                            </div>
                         </div>
                     </div>
                 </section>
