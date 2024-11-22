@@ -1,9 +1,6 @@
 import React from "react";
 import SidebarJSX from "../../components/common/Sidebar";
-import {
-  DrawerJSX,
-  handleDrawerToggle,
-} from "../../components/common/SidebarDrawer";
+import { DrawerJSX, handleDrawerToggle } from "../../components/common/SidebarDrawer";
 import { useNavigation } from "../../hooks/useNavigationBar";
 import logo from "../../assets/tdr-logo.png";
 

@@ -2,6 +2,7 @@ import React from "react";
 import SidebarJSX from "../../components/common/Sidebar";
 import {DrawerJSX, handleDrawerToggle} from "../../components/common/SidebarDrawer";
 import { useNavigation } from "../../hooks/useNavigationBar";
+import logo from "../../assets/tdr-logo.png";
 
 const InsightsJSX = () => {
 
@@ -29,250 +30,142 @@ const InsightsJSX = () => {
             
             </div>
 
-            <div className="w-10/12 p-8" id="titulos">
-                <section id="h1">
-                    
-                    <h1>Heading1</h1>
-                    
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
-                        feugiat, turpis at pulvinar vulputate, erat libero tristique tellus,
-                        nec bibendum odio risus sit amet ante. Aliquam erat volutpat. Nunc
-                        auctor. Mauris pretium quam et urna. Fusce nibh. Duis risus.
-                        Curabitur sagittis hendrerit ante. Aliquam erat volutpat. Vestibulum
-                        erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Duis
-                        condimentum augue id magna semper rutrum. Nullam justo enim,
-                        consectetuer nec, ullamcorper ac, vestibulum in, elit. Proin pede
-                        metus, vulputate nec, fermentum fringilla, vehicula vitae, justo.
-                        Fusce consectetuer risus a nunc. Aliquam ornare wisi eu metus.
-                        Integer pellentesque quam vel velit. Duis pulvinar. Nam quis nulla.
-                        Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel
-                        lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis
-                        quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper
-                        pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum.
-                        Nulla non arcu lacinia neque faucibus fringilla. Nulla non lectus
-                        sed nisl molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat. Lorem ipsum dolor
-                        sit amet, consectetuer adipiscing elit. Morbi gravida libero nec
-                        velit. Morbi scelerisque luctus velit. Etiam dui sem, fermentum
-                        vitae, sagittis id, malesuada in, quam. Proin mattis lacinia justo.
-                        Vestibulum facilisis auctor urna. Aliquam in lorem sit amet leo
-                        accumsan lacinia. Integer rutrum, orci vestibulum ullamcorper
-                        ultricies, lacus quam ultricies odio, vitae placerat pede sem sit
-                        amet enim. Phasellus et lorem id felis nonummy placerat. Fusce dui
-                        leo, imperdiet in, aliquam sit amet, feugiat eu, orci. Aenean vel
-                        massa quis mauris vehicula lacinia. Quisque tincidunt scelerisque
-                        libero. Maecenas libero. Etiam dictum tincidunt diam. Donec ipsum
-                        massa, ullamcorper in, auctor et, scelerisque sed, est. Suspendisse
-                        nisl. Sed convallis magna eu sem. Cras pede libero, dapibus nec,
-                        pretium sit amet, tempor quis, urna. Nam quis nulla. Integer
-                        malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus.
-                        Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem.
-                        Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar.
-                        Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla non
-                        arcu lacinia neque faucibus fringilla. Nulla non lectus sed nisl
-                        molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat.
-                    </p>
-                
+            <div className="w-11/12 md:w-[85%] p-8">
+                <section id="Mantenimientos">
+                    <div className=" my-2 rounded-md">
+                        <h1>
+                            Mantenimientos
+                        </h1>
+                    </div>
+
+                    <div className="p-6 bg-neutral-50 rounded-md text-justify">
+                        <p>
+                            El kilometraje (kMS) y el tiempo medio de reparación (MTTR) son predictores significativos del costo de reparaciones (TOTAL). Cada kilómetro adicional aumenta en promedio el costo de las reparaciones en 0.0107. Por su parte, cada incremento unitario en el MTTR aumenta el costo de reparaciones en 12.66.
+                        </p>
+                        <p>
+                            A medida que los vehículos se vuelven más viejos, la necesidad de reparaciones correctivas disminuye, posiblemente debido a un mejor mantenimiento preventivo en vehículos más nuevos. Se descubrió que un aumento de 1 año en la edad del vehículo (UnitYear) se asocia con una disminución del 2.95% en las probabilidades de que el mantenimiento sea correctivo.
+                        </p>
+                    </div>
                 </section>
 
-                <section id="h2">
-                
-                    <h1>Heading2</h1>
-                    
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
-                        feugiat, turpis at pulvinar vulputate, erat libero tristique tellus,
-                        nec bibendum odio risus sit amet ante. Aliquam erat volutpat. Nunc
-                        auctor. Mauris pretium quam et urna. Fusce nibh. Duis risus.
-                        Curabitur sagittis hendrerit ante. Aliquam erat volutpat. Vestibulum
-                        erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Duis
-                        condimentum augue id magna semper rutrum. Nullam justo enim,
-                        consectetuer nec, ullamcorper ac, vestibulum in, elit. Proin pede
-                        metus, vulputate nec, fermentum fringilla, vehicula vitae, justo.
-                        Fusce consectetuer risus a nunc. Aliquam ornare wisi eu metus.
-                        Integer pellentesque quam vel velit. Duis pulvinar. Nam quis nulla.
-                        Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel
-                        lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis
-                        quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper
-                        pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum.
-                        Nulla non arcu lacinia neque faucibus fringilla. Nulla non lectus
-                        sed nisl molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat. Lorem ipsum dolor
-                        sit amet, consectetuer adipiscing elit. Morbi gravida libero nec
-                        velit. Morbi scelerisque luctus velit. Etiam dui sem, fermentum
-                        vitae, sagittis id, malesuada in, quam. Proin mattis lacinia justo.
-                        Vestibulum facilisis auctor urna. Aliquam in lorem sit amet leo
-                        accumsan lacinia. Integer rutrum, orci vestibulum ullamcorper
-                        ultricies, lacus quam ultricies odio, vitae placerat pede sem sit
-                        amet enim. Phasellus et lorem id felis nonummy placerat. Fusce dui
-                        leo, imperdiet in, aliquam sit amet, feugiat eu, orci. Aenean vel
-                        massa quis mauris vehicula lacinia. Quisque tincidunt scelerisque
-                        libero. Maecenas libero. Etiam dictum tincidunt diam. Donec ipsum
-                        massa, ullamcorper in, auctor et, scelerisque sed, est. Suspendisse
-                        nisl. Sed convallis magna eu sem. Cras pede libero, dapibus nec,
-                        pretium sit amet, tempor quis, urna. Nam quis nulla. Integer
-                        malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus.
-                        Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem.
-                        Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar.
-                        Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla non
-                        arcu lacinia neque faucibus fringilla. Nulla non lectus sed nisl
-                        molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat.
-                    </p>
-                
+                <div className=" my-2 rounded-md">
+                    <h1>
+                        Pregunta de investigacion estadistica
+                    </h1>
+                </div>
+
+                <div className="p-6 bg-neutral-50 rounded-md text-justify">
+                    <h2 className="mb-0">
+                        ¿Existe una relación significativa entre el tipo de unidad, su edad y la frecuencia de mantenimiento correctivo, y el número de fallas que presentan trimestralmente? Si es así, ¿cómo afectan estas fallas o mantenimientos en los costos de mantenimiento y qué estrategias podrían implementarse para reducir estos costos en un 10-15% anual?
+                    </h2>
+                </div>
+
+                <section id="Costos">
+                    <div className=" my-2 rounded-md">
+                        <h1>
+                            Costos
+                        </h1>
+                    </div>
+
+                    <div className="p-6 bg-neutral-50 rounded-md text-justify">
+                        <h2>
+                            Radiografía del Mantenimiento: Análisis Descriptivo y Resumen Estadístico
+                        </h2>
+
+                        <p className="">
+                            ¿Existe una diferencia significativa en los costos de mantenimiento entre diferentes tipos de equipos?
+                        </p>
+
+                        <ul className="list-disc mb-4 pl-10">
+                            <li>
+                                Hipótesis Nula (H₀): No existe una diferencia significativa en los costos de mantenimiento entre diferentes tipos de equipos.
+                            </li>
+                            <li>
+                                Hipótesis Alternativa (H₁): Existe una diferencia significativa en los costos de mantenimiento entre diferentes tipos de equipos.
+                            </li>
+                        </ul>
+
+                        <p className="">
+                            Respuesta: Sí, los costos de mantenimiento son los siguientes:
+                        </p>
+
+                        <div className="flex justify-center">
+                            <img className="w-2/5 p-8" src={logo} alt="TDR_logo" />
+                        </div>
+                    </div>
                 </section>
 
-                <section id="h3">
+                <section id="Modelos">
+                    <div className=" my-2 rounded-md">
+                        <h1>
+                            Modelos
+                        </h1>
+                    </div>
 
-                    <h1>Heading3</h1>
-                    
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
-                        feugiat, turpis at pulvinar vulputate, erat libero tristique tellus,
-                        nec bibendum odio risus sit amet ante. Aliquam erat volutpat. Nunc
-                        auctor. Mauris pretium quam et urna. Fusce nibh. Duis risus.
-                        Curabitur sagittis hendrerit ante. Aliquam erat volutpat. Vestibulum
-                        erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Duis
-                        condimentum augue id magna semper rutrum. Nullam justo enim,
-                        consectetuer nec, ullamcorper ac, vestibulum in, elit. Proin pede
-                        metus, vulputate nec, fermentum fringilla, vehicula vitae, justo.
-                        Fusce consectetuer risus a nunc. Aliquam ornare wisi eu metus.
-                        Integer pellentesque quam vel velit. Duis pulvinar. Nam quis nulla.
-                        Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel
-                        lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis
-                        quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper
-                        pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum.
-                        Nulla non arcu lacinia neque faucibus fringilla. Nulla non lectus
-                        sed nisl molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat. Lorem ipsum dolor
-                        sit amet, consectetuer adipiscing elit. Morbi gravida libero nec
-                        velit. Morbi scelerisque luctus velit. Etiam dui sem, fermentum
-                        vitae, sagittis id, malesuada in, quam. Proin mattis lacinia justo.
-                        Vestibulum facilisis auctor urna. Aliquam in lorem sit amet leo
-                        accumsan lacinia. Integer rutrum, orci vestibulum ullamcorper
-                        ultricies, lacus quam ultricies odio, vitae placerat pede sem sit
-                        amet enim. Phasellus et lorem id felis nonummy placerat. Fusce dui
-                        leo, imperdiet in, aliquam sit amet, feugiat eu, orci. Aenean vel
-                        massa quis mauris vehicula lacinia. Quisque tincidunt scelerisque
-                        libero. Maecenas libero. Etiam dictum tincidunt diam. Donec ipsum
-                        massa, ullamcorper in, auctor et, scelerisque sed, est. Suspendisse
-                        nisl. Sed convallis magna eu sem. Cras pede libero, dapibus nec,
-                        pretium sit amet, tempor quis, urna. Nam quis nulla. Integer
-                        malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus.
-                        Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem.
-                        Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar.
-                        Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla non
-                        arcu lacinia neque faucibus fringilla. Nulla non lectus sed nisl
-                        molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat.
-                    </p>
-                
+                    <div className="p-6 bg-neutral-50 rounded-md text-justify">
+                        <h2>
+                            Apuesta al Futuro: Prueba de Hipótesis sobre la Eficacia del Mantenimiento Predictivo
+                        </h2>
+
+                        <p className="">
+                            ¿Existe una diferencia significativa en la frecuencia del mantenimiento correctivo entre diferentes tipos de equipos?
+                        </p>
+
+                        <ul className="list-disc mb-4 pl-10">
+                            <li>
+                                Hipótesis Nula (H₀): No existe una diferencia significativa en la frecuencia del mantenimiento correctivo entre diferentes tipos de equipos.
+                            </li>
+                            <li>
+                                Hipótesis Alternativa (H₁): Existe una diferencia significativa en la frecuencia del mantenimiento correctivo entre diferentes tipos de equipos.
+                            </li>
+                        </ul>
+
+                        <p className="">
+                            Respuesta: Sí
+                        </p>
+
+                        <div className="flex justify-center">
+                            <img className="w-2/5 p-8" src={logo} alt="TDR_logo" />
+                        </div>
+                    </div>
                 </section>
 
-                <section id="h4">
+                <section id="Propuesta">
+                    <div className=" my-2 rounded-md">
+                        <h1>
+                            Propuesta
+                        </h1>
+                    </div>
 
-                    <h1>Heading4</h1>
-                    
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
-                        feugiat, turpis at pulvinar vulputate, erat libero tristique tellus,
-                        nec bibendum odio risus sit amet ante. Aliquam erat volutpat. Nunc
-                        auctor. Mauris pretium quam et urna. Fusce nibh. Duis risus.
-                        Curabitur sagittis hendrerit ante. Aliquam erat volutpat. Vestibulum
-                        erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Duis
-                        condimentum augue id magna semper rutrum. Nullam justo enim,
-                        consectetuer nec, ullamcorper ac, vestibulum in, elit. Proin pede
-                        metus, vulputate nec, fermentum fringilla, vehicula vitae, justo.
-                        Fusce consectetuer risus a nunc. Aliquam ornare wisi eu metus.
-                        Integer pellentesque quam vel velit. Duis pulvinar. Nam quis nulla.
-                        Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel
-                        lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis
-                        quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper
-                        pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum.
-                        Nulla non arcu lacinia neque faucibus fringilla. Nulla non lectus
-                        sed nisl molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat. Lorem ipsum dolor
-                        sit amet, consectetuer adipiscing elit. Morbi gravida libero nec
-                        velit. Morbi scelerisque luctus velit. Etiam dui sem, fermentum
-                        vitae, sagittis id, malesuada in, quam. Proin mattis lacinia justo.
-                        Vestibulum facilisis auctor urna. Aliquam in lorem sit amet leo
-                        accumsan lacinia. Integer rutrum, orci vestibulum ullamcorper
-                        ultricies, lacus quam ultricies odio, vitae placerat pede sem sit
-                        amet enim. Phasellus et lorem id felis nonummy placerat. Fusce dui
-                        leo, imperdiet in, aliquam sit amet, feugiat eu, orci. Aenean vel
-                        massa quis mauris vehicula lacinia. Quisque tincidunt scelerisque
-                        libero. Maecenas libero. Etiam dictum tincidunt diam. Donec ipsum
-                        massa, ullamcorper in, auctor et, scelerisque sed, est. Suspendisse
-                        nisl. Sed convallis magna eu sem. Cras pede libero, dapibus nec,
-                        pretium sit amet, tempor quis, urna. Nam quis nulla. Integer
-                        malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus.
-                        Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem.
-                        Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar.
-                        Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla non
-                        arcu lacinia neque faucibus fringilla. Nulla non lectus sed nisl
-                        molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat.
-                    </p>
+                    <div className="p-6 bg-neutral-50 rounded-md text-justify">
+                        <h2>
+                            Transformando Costos en Oportunidades: Cuantificación de los Beneficios Económicos del Mantenimiento Predictivo
+                        </h2>
 
-                </section>
+                        <p className="">
+                            La propuesta que se realiza para disminuir los costos de mantenimiento, es la instalación de sensores que puedan determinar al momento el estado en que se encuentra cada unidad, y así anticipar y mejorar el programa de mantenimientos. A continuación se detallan los sensores propuestos a instalar y sus beneficios:
+                        </p>
 
-                <section id="h5">
-                    
-                    <h1>Heading5</h1>
-                    
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam
-                        feugiat, turpis at pulvinar vulputate, erat libero tristique tellus,
-                        nec bibendum odio risus sit amet ante. Aliquam erat volutpat. Nunc
-                        auctor. Mauris pretium quam et urna. Fusce nibh. Duis risus.
-                        Curabitur sagittis hendrerit ante. Aliquam erat volutpat. Vestibulum
-                        erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Duis
-                        condimentum augue id magna semper rutrum. Nullam justo enim,
-                        consectetuer nec, ullamcorper ac, vestibulum in, elit. Proin pede
-                        metus, vulputate nec, fermentum fringilla, vehicula vitae, justo.
-                        Fusce consectetuer risus a nunc. Aliquam ornare wisi eu metus.
-                        Integer pellentesque quam vel velit. Duis pulvinar. Nam quis nulla.
-                        Integer malesuada. In in enim a arcu imperdiet malesuada. Sed vel
-                        lectus. Donec odio urna, tempus molestie, porttitor ut, iaculis
-                        quis, sem. Phasellus rhoncus. Aenean id metus id velit ullamcorper
-                        pulvinar. Vestibulum fermentum tortor id mi. Pellentesque ipsum.
-                        Nulla non arcu lacinia neque faucibus fringilla. Nulla non lectus
-                        sed nisl molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat. Lorem ipsum dolor
-                        sit amet, consectetuer adipiscing elit. Morbi gravida libero nec
-                        velit. Morbi scelerisque luctus velit. Etiam dui sem, fermentum
-                        vitae, sagittis id, malesuada in, quam. Proin mattis lacinia justo.
-                        Vestibulum facilisis auctor urna. Aliquam in lorem sit amet leo
-                        accumsan lacinia. Integer rutrum, orci vestibulum ullamcorper
-                        ultricies, lacus quam ultricies odio, vitae placerat pede sem sit
-                        amet enim. Phasellus et lorem id felis nonummy placerat. Fusce dui
-                        leo, imperdiet in, aliquam sit amet, feugiat eu, orci. Aenean vel
-                        massa quis mauris vehicula lacinia. Quisque tincidunt scelerisque
-                        libero. Maecenas libero. Etiam dictum tincidunt diam. Donec ipsum
-                        massa, ullamcorper in, auctor et, scelerisque sed, est. Suspendisse
-                        nisl. Sed convallis magna eu sem. Cras pede libero, dapibus nec,
-                        pretium sit amet, tempor quis, urna. Nam quis nulla. Integer
-                        malesuada. In in enim a arcu imperdiet malesuada. Sed vel lectus.
-                        Donec odio urna, tempus molestie, porttitor ut, iaculis quis, sem.
-                        Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar.
-                        Vestibulum fermentum tortor id mi. Pellentesque ipsum. Nulla non
-                        arcu lacinia neque faucibus fringilla. Nulla non lectus sed nisl
-                        molestie malesuada. Proin in tellus sit amet nibh dignissim
-                        sagittis. Vivamus luctus egestas leo. Maecenas sollicitudin. Nullam
-                        rhoncus aliquam metus. Etiam egestas wisi a erat.
-                    </p>
+                        <ul className="list-disc mb-4 pl-10 text-justify w-[85%]">
+                            <li>
+                                Sensor de temperatura, aire y presión EDT: Permitiría detectar el estado actual de la caja, ya que se presentan en gran medida fallas en esta parte.
+                            </li>
+                            <li>
+                                Kit 10 Sensores Tpms Autel: Permite monitorear la presión de las llantas, considerando que es otra de las fallas más comunes en los tractos.
+                            </li>
+                            <li>
+                                UNIVERSAL TESTER PARA SENSORES CAMIÓN CISTERNA COMBUSTIBLE TESTER SCULLY: Es de suma importancia tener el conocimiento del nivel de combustible al momento de cada unidad.
+                            </li>
+                        </ul>
 
+                        <p className="">
+                            Respuesta: Sí, los costos de mantenimiento son los siguientes:
+                        </p>
+
+                        <div className="flex justify-center">
+                            <img className="w-2/5 p-8" src={logo} alt="TDR_logo" />
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>
