@@ -5,7 +5,7 @@ import { useNavigation } from "../../hooks/useNavigationBar";
 import TableJSX from "../../hooks/createTable";
 import logo from "../../assets/tdr-logo.png";
 import logo2 from "../../assets/tdr-logo2.png";
-import tracto from "../../assets/tdr-tracto.png";
+import tracto from "../../assets/tdr-tracto.jpg";
 
 const HomeJSX = () => {
   const { activeSection, sections } = useNavigation();
@@ -64,7 +64,7 @@ const HomeJSX = () => {
             </h1>
           </div>
 
-          <div className="p-6 bg-neutral-50 rounded-md text-justify">
+          <div className="p-6 rounded-md text-justify">
 
             <div className="flex flex-row items-center">
               <img className="w-1/2 h-auto" src={tracto} alt="TDR_logo" />
