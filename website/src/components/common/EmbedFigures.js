@@ -31,6 +31,7 @@ function EmbedFigure({ route }) {
             <iframe
                 className="figure overflow-visible w-full h-full m-auto p-0 border-none"
                 src={`http://127.0.0.1:8050${route}`}
+                title="Figure"
             />
             
         </div>

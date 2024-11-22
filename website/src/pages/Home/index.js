@@ -24,15 +24,15 @@ const HomeJSX = () => {
         <DrawerJSX sections={sections} activeSection={activeSection} />
       </div>
 
-      <div className="w-11/12 lg:w-4/5 p-8">
+      <div className="w-11/12 md:w-[85%] p-8">
         <section id="Introduccion">
-          <div className=" mb-2 bg-neutral-100 rounded-md">
+          <div className=" mb-2 bg-white rounded-md">
             <h1>
               TDR: Empresa especializada en servicios integrales de transporte
             </h1>
           </div>
 
-          <div className="bg-neutral-100 rounded-md text-justify">
+          <div className="p-6 bg-neutral-50 rounded-md text-justify">
 
             <div className="flex flex-col lg:flex-row items-center">
               <img className="w-1/2 h-auto p-8" src={logo} alt="TDR_logo" />
@@ -45,20 +45,20 @@ const HomeJSX = () => {
         </section>
 
         <section id="Costos">
-          <div className=" my-2 bg-neutral-100 rounded-md">
+          <div className=" my-2 rounded-md">
             <h1>
               Costos
             </h1>
           </div>
 
-          <div className="bg-neutral-100 rounded-md text-justify">
+          <div className="p-6 bg-neutral-50 rounded-md text-justify">
             <h2>
               Tansformando Costos en Oportunidades: Cuantificacion de los
               Beneficios Econonmicos del Mantenimiento Predictivo
             </h2>
 
             <div className="flex flex-col lg:flex-row items-center">
-              <p className="w-1/2">
+              <p className="p-4 w-1/2">
                 A continuación se presenta una estimación de los costos de
                 mantenimiento predictivo para los tres cuatrimestres de 2025. Para
                 ello, se consideraron supuestos como la tasa de inflación
@@ -74,13 +74,13 @@ const HomeJSX = () => {
         </section>
 
         <section id="Modelos">
-          <div className=" my-2 bg-neutral-100 rounded-md">
+          <div className=" my-2 rounded-md">
             <h1>
               Modelos
             </h1>
           </div>
 
-          <div className="bg-neutral-100 rounded-md text-justify">
+          <div className="p-6 bg-neutral-50 rounded-md text-justify">
             <h2>
               De Números a Estrategia: Análisis Inferencial para Optimizar Costos y Rentabilidad
             </h2>
@@ -90,7 +90,7 @@ const HomeJSX = () => {
               siguientes hallazgos:
             </p>
 
-            <div className="flex flex-col lg:flex-row items-center">
+            <div className="flex flex-col lg:flex-row items-center px-4">
               <ul className="list-disc pl-5">
                 <li>
                   El kilometraje (KMS) y el tiempo medio de reparación (MTTR) son predictores significativos del costo de reparaciones (TOTAL). Cada kilómetro adicional aumenta en promedio el costo de las reparaciones en 0.0107. Por su parte, cada incremento unitario en el MTTR aumenta el costo de reparaciones en 12.66.

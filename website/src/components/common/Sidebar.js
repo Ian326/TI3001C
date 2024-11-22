@@ -8,7 +8,7 @@ const SidebarJSX = ({ sections, activeSection, handleDrawerToggle }) => {
     return (
         <div>
 
-            <div className="hidden lg:flex flex-col fixed w-1/12 p-2 pt-8" id="navegacion">
+            <div className="hidden lg:flex flex-col fixed w-[10%] p-2 pt-8" id="navegacion">
                 {sections.map((section) => {
                     const id = section.getAttribute("id");
                     return (
@@ -16,7 +16,7 @@ const SidebarJSX = ({ sections, activeSection, handleDrawerToggle }) => {
                             key={id}
                             href={`#${id}`}
                             onClick={(e) => handleClick(e, id)}
-                            className={`item-title text-ellipsis overflow-hidden ${activeSection === id ? "activeTitle" : ""}`}
+                            className={`item-title text-ellipsis overflow-hidden ${activeSection === id ? "activeTitle" : ""} lg:text-sm 2xl:text-base`}
                         >
                             {id}
                         </a>

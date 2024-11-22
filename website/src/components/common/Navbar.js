@@ -16,11 +16,12 @@ const NavBarJSX = () => {
         
         <div className="flex items-center space-x-8">
           
-          <a href="#">
-            
-            <img className="h-[64px]" src={logo} alt="TDR_logo"/>
-          
-          </a>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="focus:outline-none"
+          >
+            <img className="h-[64px]" src={logo} alt="TDR_logo" />
+          </button>
           
           <div className="sayer-full hidden md:visible md:inline-block shrink-0 pr-2">
             SAYER FULL
