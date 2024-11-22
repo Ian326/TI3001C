@@ -49,15 +49,15 @@ const InsightsJSX = () => {
         ],
         "Precio Unitario": [
             '$1,790.05',
-            '$ 442.15',
-            '$ 52,012.58',
-            '$ 54,244.78',
+            '$442.15',
+            '$52,012.58',
+            '$54,244.78',
         ],
         "Costo por flota": [
-            '$ 12,530.35',
-            '$ 3,095.08',
-            '$ 223,654.09',
-            '$ 239,279.52',
+            '$12,530.35',
+            '$3,095.08',
+            '$223,654.09',
+            '$239,279.52',
         ],
     };
 
@@ -143,7 +143,7 @@ const InsightsJSX = () => {
                         </p>
 
                         <div className="flex justify-center px-8">
-                            <div className="w-[75%]">
+                            <div className="md:w-[75%]">
                                 <TableJSX data={table1} />
                             </div>
                         </div>
@@ -179,8 +179,8 @@ const InsightsJSX = () => {
                             Respuesta: Sí
                         </p>
 
-                        <div className="flex justify-center px-8">
-                            <div className="w-[75%]">
+                        <div className="flex justify-center md:px-8">
+                            <div className="md:w-[75%]">
                                 <TableJSX data={table2} />
                             </div>
                         </div>
@@ -219,8 +219,8 @@ const InsightsJSX = () => {
                             Respuesta: Sí, los costos de mantenimiento son los siguientes:
                         </p>
 
-                        <div className="flex justify-center px-8">
-                            <div className="w-[75%]">
+                        <div className="flex justify-center md:px-8">
+                            <div className="md:w-[75%]">
                                 <TableJSX data={table3} />
                             </div>
                         </div>

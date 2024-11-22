@@ -35,10 +35,10 @@ const HomeJSX = () => {
       'TOTAL'
     ],
     "Estimado": [
-      '700,543.84',
-      '1,042,924.66',
-      '891,289.74',
-      '2,634,758.24'
+      '$700,543.84',
+      '$1,042,924.66',
+      '$891,289.74',
+      '$2,634,758.24'
     ],
   };
 
@@ -102,7 +102,7 @@ const HomeJSX = () => {
               </p>
 
               
-              <div className="lg:w-full px-8 pb-8">
+              <div className="lg:w-10/12 px-8 pb-8">
                 <h3 className="text-center sm:text-justify">
                   Proyeccion de Costos de Mantenimiento 2025
                 </h3>
