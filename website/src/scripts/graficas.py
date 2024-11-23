@@ -414,20 +414,42 @@ app.layout = html.Div(children=[
     Input('url', 'pathname')
 )
 def display_page(pathname):
-    # Extraer el nombre de la figura desde la URL
+    # Extract the figure name from the URL
     figure_name = pathname.lstrip("/")
     if figure_name in figures:
-        # Retornar el gráfico correspondiente si existe
-        return html.Div([
-            dcc.Graph(
-                id=f"{figure_name}-graph",
-                figure=figures[figure_name],
-                style={"width": "97vw", "height": "95vh"}  # Dimensiones del gráfico
-            )
-        ])
-    # Manejo de errores: Página no encontrada
-    return html.Div("404: Gráfico no encontrado. Revisa la URL.", style={"textAlign": "center", "fontSize": "24px"})
+        figure = figures[figure_name]
+        figure.update_layout(
+            paper_bgcolor="rgba(0,0,0,0)",
+        )
+        return html.Div(
+            children=[
+                dcc.Graph(
+                    id=f"{figure_name}-graph",
+                    figure=figure,
+                    style={
+                        'margin': '0',
+                        'padding': '0',
+                        'height': '100%',
+                        'width': '100%',
+                        'flex': '1 1 auto'
+                    },
+                ),
+            ],
+            className="graph-container",
+            style={
+                'margin': '0',
+                'padding': '0',
+                'width': '100%',
+                'height': '90vh',
+                'overflow': 'hidden',  # Prevent scrolling
+                'display': 'flex',
+                'flexDirection': 'column',
+                'flex': '1 1 auto'
+            },
+        )
 
-# Correr la aplicación
+    # 404 - Page not found
+    return html.Div("404: Figure not found", style={"textAlign": "center", "fontSize": "24px"})
+
 if __name__ == '__main__':
     app.run_server(debug=False)
