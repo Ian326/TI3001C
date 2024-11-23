@@ -35,29 +35,22 @@ const GraphicsJSX = () => {
                     
                     <h1>Costos</h1>
                     
-                    <div className='flex justify-center overflow-x-visible mt-4'>
+                    <div className='flex flex-wrap mt-4 justify-stretch'>
                         
-                        <div className='bg-slate-100 min-h-[360px] min-w-[360px] flex-grow'>
+                        <div className='bg-slate-50 min-h-[360px] min-w-[360px] grow'>
                             <EmbedFigure route='/figure1' />
                         </div>
                         
-                        <div className='grid grid-cols-2 grid-rows-2 size-1/2 justify-items-center'>
+                        <div className='flex flex-col grow'>
                             
-                            <div className='bg-slate-100 min-h-[180px] min-w-[180px] flex-grow'>
+                            <div className='bg-slate-50 min-h-[360px] md:min-h-[225px]'>
                                 <EmbedFigure route='/figure1' />
                             </div>
 
-                            <div className='bg-slate-100 min-h-[180px] min-w-[180px] flex-grow'>
+                            <div className='bg-slate-50 min-h-[360px] md:min-h-[225px]'>
                                 <EmbedFigure route='/figure1' />
                             </div>
 
-                            <div className='bg-slate-100 min-h-[180px] min-w-[180px] flex-grow'>
-                                <EmbedFigure route='/figure1' />
-                            </div>
-
-                            <div className='bg-slate-100 min-h-[180px] min-w-[180px] flex-grow'>
-                                <EmbedFigure route='/figure1' />
-                            </div>
                         </div>
                     
                     </div>

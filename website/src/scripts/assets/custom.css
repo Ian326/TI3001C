@@ -2,3 +2,13 @@
 ._dash-loading {
     display: none !important;
 }
+
+.graph-container {
+    height: 95vh;
+}
+
+@media (max-height: 320px) {
+    .graph-container {
+        height: 90vh;
+    }
+}
