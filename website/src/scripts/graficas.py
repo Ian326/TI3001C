@@ -29,6 +29,27 @@ def calculate_cuatrimester(month):
         return 3  # Cuatrimestre 3
     else:
         return None
+    
+
+# Función para calcular el promedio de días entre reparaciones
+def meanBtwnRepairs(dates):
+    if len(dates) > 1:
+        dates = sorted(dates)  # Ordenar las fechas
+        # Calcular diferencias entre fechas consecutivas y regresar el promedio en días
+        return pd.Series(dates).diff().mean().days
+    else:
+        return None  # Si solo hay una fecha
+
+
+# Función para calcular el promedio de días entre reparaciones
+def meanBtwnRepairsHours(dates):
+    if len(dates) > 1:
+        dates = sorted(dates)  # Ordenar las fechas
+        # Calcular diferencias entre fechas consecutivas y regresar el promedio en horas
+        return pd.Series(dates).diff().mean().total_seconds() / 3600
+    else:
+        return None  # Si solo hay una fecha
+    
 
 data_sayer['OpenedCuatrimester'] = data_sayer['OpenedDate'].dt.month.apply(calculate_cuatrimester)
 
@@ -45,6 +66,17 @@ sayer_maint2_byUnit_byRepReason = data_sayer.groupby(
                                         RepairDates=('OpenedDate', lambda x:
                                             list(x + pd.to_timedelta(data_sayer.loc[x.index, 'laghoras'], unit='h')))
                                     ).reset_index()
+
+# Crear una nueva columna para el promedio de días entre reparaciones
+sayer_maint2_byUnit_byRepReason['AvgDaysBetweenRepairs'] = sayer_maint2_byUnit_byRepReason['RepairDates'].apply(meanBtwnRepairs)
+# Crear una nueva columna para el promedio de horas entre reparaciones
+sayer_maint2_byUnit_byRepReason['AvgHoursBetweenRepairs'] = sayer_maint2_byUnit_byRepReason['RepairDates'].apply(meanBtwnRepairsHours)
+# Asegurarse de que las fechas estén en formato datetime
+sayer_maint2_byUnit_byRepReason['RepairDates'] = sayer_maint2_byUnit_byRepReason['RepairDates'].apply(lambda x: pd.to_datetime(x))
+
+# Crear un nuevo DataFrame con las reparaciones preventivas
+sayer_maint2_byUnit_preventive = sayer_maint2_byUnit_byRepReason[
+                                    sayer_maint2_byUnit_byRepReason['JobTypeSummary'] == 'PREVENTIVO'].copy()
 
 # Filtrar solo las unidades tipo 'TRACTOR'
 filtered_data = sayer_maint2_byUnit[sayer_maint2_byUnit['UnitType'] == 'TRACTOR']
@@ -254,6 +286,8 @@ figure_cuatrimester.update_layout(
 sayer_maint2_byUnit_corrective = sayer_maint2_byUnit_byRepReason[
                                     sayer_maint2_byUnit_byRepReason['JobTypeSummary'] == 'CORRECTIVO'].copy()
 
+
+
 corrective_frequencies = (
     sayer_maint2_byUnit_corrective.groupby('UnitType')['RepairCount']
     .sum()
@@ -351,6 +385,183 @@ fig_cumulative.add_vline(x=12.5, line_width=1.5, line_dash="dash", line_color="l
 # Bordes en las líneas
 fig_cumulative.update_traces(line=dict(width=3))
 
+
+################################################################ cambiar color graficas 
+# Crear la figura base para el histograma
+fig_hist = px.histogram(
+    sayer_maint2_byUnit_corrective,
+    x='AvgHoursBetweenRepairs',
+    nbins=30,  # Número de bins en el histograma
+    title='Distribución de las "horas promedio" entre reparaciones (MTBF)',
+)
+
+# Ajustar los colores del histograma
+fig_hist.update_traces(
+    marker_color='midnightblue', 
+    marker_line_color='black',   
+    marker_line_width=1.5        
+)
+
+
+
+# Ajustar diseño del gráfico
+fig_hist.update_layout(
+    xaxis_title="Horas",              
+    yaxis_title="Frecuencia",       
+    plot_bgcolor="white",            
+    paper_bgcolor="white",            
+    title_font=dict(size=20),        
+    margin=dict(l=50, r=50, t=50, b=50),  
+    legend_title_text="Leyenda"       
+)
+
+
+
+###############################################################################cambio de color 2
+fig_hist2 = px.histogram(
+
+    data_sayer,
+    x='laghoras',
+    nbins=35,  # Número de bins
+    title='Distribución de las "horas promedio" en reparaciones (MTTR).',
+)
+
+# Personalizar el color del histograma
+fig_hist2.update_traces(
+    marker_color='midnightblue',  
+    marker_line_color='black',  
+    marker_line_width=1.5       
+)
+
+
+
+# Ajustar diseño del gráfico
+fig_hist2.update_layout(
+    xaxis=dict(range=[0, 1500]),
+    xaxis_title="Horas",             
+    yaxis_title="Frecuencia",        
+    plot_bgcolor="white",           
+    paper_bgcolor="white",           
+    title_font=dict(size=20),        
+    margin=dict(l=50, r=50, t=50, b=50),  
+    legend_title_text="Leyenda"      
+)
+
+##########################################cambio de color 3
+# positions = [0, 0.5, 1]
+colors = ['midnightblue', 'lightgray', 'darkorange']
+custom_cmap = LinearSegmentedColormap.from_list('custom_cmap', list(zip(positions, colors))) 
+# Generar una lista de colores interpolados
+n_colors = len(data_sayer['UnitID'].unique())  # Número de unidades únicas
+color_list_rgb = [custom_cmap(i / (n_colors - 1)) for i in range(n_colors)]
+color_list_hex = ['#%02x%02x%02x' % (int(r*255), int(g*255), int(b*255)) for r, g, b, _ in color_list_rgb]
+
+# Agrupar los costos totales por cada unidad
+data_aggregated = data_sayer.groupby('UnitID', as_index=False)['TOTAL'].sum()
+
+# Crear el gráfico de barras con los costos totales por unidad
+fig_costos_agrupados = px.bar(
+    data_aggregated,
+    x='UnitID',  # Eje X: Unidad
+    y='TOTAL',   # Eje Y: Suma total de costos
+    title='Costos totales agrupados por unidad',
+    color='UnitID',  # Color por unidad
+    color_discrete_sequence=color_list_hex,  # Colores personalizados
+)
+
+# Personalizar el diseño del gráfico
+fig_costos_agrupados.update_layout(
+    xaxis_title="Unidad",        # Etiqueta del eje X
+    yaxis_title="Costo Total",   # Etiqueta del eje Y
+    plot_bgcolor="white",        # Fondo blanco
+    paper_bgcolor="white",       # Fondo general blanco
+    title_font=dict(size=20),    # Tamaño de la fuente del título
+    margin=dict(l=50, r=50, t=50, b=50),  # Márgenes del gráfico
+    xaxis=dict(tickangle=-45),   # Rotar las etiquetas del eje X
+    bargap=0.2                   # Ajustar el espacio entre barras
+)
+
+###################################################################################cambio de color 
+# Crear histograma con Plotly
+fig_hist_corrective = px.histogram(
+    sayer_maint2_byUnit_corrective,  # DataFrame con datos correctivos
+    x='RepairCount',  # Eje X: Frecuencia de mantenimiento correctivo
+    nbins=10,  # Número de bins ajustable
+
+    title='Distribución de las frecuencias de mantenimiento correctivo.',
+    color_discrete_sequence=['midnightblue'],  # Color personalizado
+)
+
+# Ajustar diseño del gráfico
+fig_hist_corrective.update_layout(
+    xaxis_title="Frecuencia de mantenimiento correctivo",  # Etiqueta del eje X
+    yaxis_title="Cantidad de unidades",  # Etiqueta del eje Y
+    plot_bgcolor="white",  # Fondo blanco
+    paper_bgcolor="white",  # Fondo blanco
+    title_font=dict(size=20),  # Tamaño del título
+    margin=dict(l=50, r=50, t=50, b=50),  # Márgenes
+    bargap=0.1  # Espaciado entre barras
+)
+
+# Personalizar las trazas
+fig_hist_corrective.update_traces(
+    marker_line_color='black',  # Bordes negros
+    marker_line_width=1.5  # Grosor del borde
+)
+
+############################################################################cambio color
+fig_hist_preventive = px.histogram(
+    sayer_maint2_byUnit_preventive,  # DataFrame con datos preventivos
+    x='RepairCount',  # Eje X: Frecuencia de mantenimiento preventivo
+    nbins=10,  # Número de bins ajustable
+    title='Distribución de las frecuencias de mantenimiento preventivo.',
+    color_discrete_sequence=['midnightblue'],  # Color personalizado
+)
+
+# Ajustar diseño del gráfico
+fig_hist_preventive.update_layout(
+    xaxis_title="Frecuencia de mantenimiento preventivo",  # Etiqueta del eje X
+    yaxis_title="Cantidad de unidades",  # Etiqueta del eje Y
+    plot_bgcolor="white",  # Fondo blanco
+    paper_bgcolor="white",  # Fondo blanco
+    title_font=dict(size=20),  # Tamaño del título
+    margin=dict(l=50, r=50, t=50, b=50),  # Márgenes
+    bargap=0.1  # Espaciado entre barras
+)
+
+# Personalizar las trazas
+fig_hist_preventive.update_traces(
+    marker_line_color='black',  # Bordes negros
+    marker_line_width=1.5  # Grosor del borde
+)
+################################################################################cambio de color 
+# Crear histograma con Plotly
+fig_hist_costos = px.histogram(
+    data_sayer,  # DataFrame con datos
+    x='TOTAL',  # Eje X: Costos de mantenimiento
+    nbins=20,  # Número de bins ajustable
+    title='Distribución de los costos de mantenimiento.',
+    color_discrete_sequence=['midnightblue'],  # Color personalizado
+)
+
+# Ajustar diseño del gráfico
+fig_hist_costos.update_layout(
+    xaxis_title="Costo de mantenimiento",  # Etiqueta del eje X
+    yaxis_title="Frecuencia",  # Etiqueta del eje Y
+    plot_bgcolor="white",  # Fondo blanco
+    paper_bgcolor="white",  # Fondo blanco general
+    title_font=dict(size=20),  # Tamaño del título
+    margin=dict(l=50, r=50, t=50, b=50),  # Márgenes
+    bargap=0.1  # Espaciado entre barras
+)
+
+# Personalizar las trazas
+fig_hist_costos.update_traces(
+    marker_line_color='black',  # Bordes negros
+    marker_line_width=1.5  # Grosor del borde
+)
+
+
 # Diccionario de gráficos para distintas rutas
 figures = {
     # Figura de ejemplo
@@ -394,7 +605,20 @@ figures = {
 
     'figure6' : fig_corrective_histogram,
 
-    'figure7' : fig_cumulative
+    'figure7' : fig_cumulative, 
+
+    'figure8' : fig_hist,
+
+    'figure9' : fig_hist2,
+
+    'figure10' : fig_costos_agrupados,
+
+    'figure11' : fig_hist_corrective,
+
+    'figure12' : fig_hist_preventive,
+
+    'figure13' : fig_hist_costos
+
 
 }
 
