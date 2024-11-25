@@ -46,3 +46,6 @@ Agradecemos a nuestros profesores y compañeros de clase por su apoyo y colabora
 
 ¡Gracias por visitar nuestro proyecto semestral!
 
+‎ | ‎
+:---: | :---:
+![tdr-logo](https://github.com/Ian326/TI3001C/blob/main/website/src/assets/tdr-logo.png) | ![tec-monterrey](https://github.com/Ian326/TI3001C/blob/main/website/src/assets/tec-monterrey-logo.png)
