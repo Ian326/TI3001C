@@ -32,45 +32,37 @@ const GraphicsJSX = () => {
                 
                 <section id='Reparaciones'>
                     
-                    <h1>Reparaciones</h1>
+                    <h1 className="my-2">Reparaciones</h1>
                     
                     <div className='flex flex-col justify-center bg-slate-50'>
-                        <div className='flex justify-center flex-wrap mt-4'>
-                            <div className='flex justify-center w-10/12'>
-                                <div className='min-h-[360px] min-w-[360px] grow'>
-                                    <EmbedFigure route='/figure3' />
-                                </div>
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <div className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figure3' />
                             </div>
-                            
-
                         </div>
 
                         <div className='flex flex-wrap mt-4 justify-stretch'>
                             <div className='min-h-[360px] min-w-[360px] grow'>
                                 <EmbedFigure route='/figure4' />
                             </div>
-
                         </div>
 
                         <div className='flex flex-wrap mt-4 justify-stretch'>
                             <div className='min-h-[360px] min-w-[360px] grow'>
                                 <EmbedFigure route='/figure5' />
                             </div>
-
                         </div>
 
                         <div className='flex flex-wrap mt-4 justify-stretch'>
                             <div className='min-h-[360px] min-w-[360px] grow'>
                                 <EmbedFigure route='/figure6' />
                             </div>
-
                         </div>
 
                         <div className='flex flex-wrap mt-4 justify-stretch'>
                             <div className='min-h-[360px] min-w-[360px] grow'>
                                 <EmbedFigure route='/figure7' />
                             </div>
-
                         </div>
 
                         <div className='flex flex-wrap mt-4 justify-stretch'>
@@ -87,7 +79,6 @@ const GraphicsJSX = () => {
                     </div>
 
                 </section>
-
 
                 <section id='MTBF'>
 
@@ -180,9 +171,8 @@ const GraphicsJSX = () => {
 
                 </section>
 
-            
             </div>
-                
+
         </div>
     );
 };

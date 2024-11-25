@@ -225,10 +225,8 @@ fig_corrective_histogram = px.bar(
 fig_corrective_histogram.update_layout(
     xaxis_title="Tipo de unidad",
     yaxis_title="Frecuencia",
-    title_font=dict(size=20),
     plot_bgcolor="white",
     paper_bgcolor="white",
-    margin=dict(l=50, r=50, t=50, b=50)
 )
 
 # Configurar bordes de las barras
@@ -257,7 +255,7 @@ fig_cumulative = px.line(
     y='CumulativeCount',
     color='MaintenanceYear',
     title='Cantidad acumulativa de registros por mes',
-    color_discrete_map={  # Asignar colores personalizados
+    color_discrete_map={
         2022: 'midnightblue',
         2023: 'lightgray',
         2024: 'darkorange'
@@ -283,8 +281,6 @@ fig_cumulative.update_layout(
     legend_title_text='Año',
     plot_bgcolor="white",
     paper_bgcolor="white",
-    title_font=dict(size=20),
-    margin=dict(t=50, l=50, b=50, r=50)
 )
 
 # Agregar líneas verticales en los meses clave
@@ -369,20 +365,18 @@ fig_hist = px.histogram(
 
 # Ajustar los colores del histograma
 fig_hist.update_traces(
-    marker_color='midnightblue', 
-    marker_line_color='black',   
-    marker_line_width=1.5        
+    marker_color='midnightblue',
+    marker_line_color='black',
+    marker_line_width=1.5
 )
 
 # Ajustar diseño del gráfico
 fig_hist.update_layout(
-    xaxis_title="Horas",              
-    yaxis_title="Frecuencia",       
-    plot_bgcolor="white",            
-    paper_bgcolor="white",            
-    title_font=dict(size=20),        
-    margin=dict(l=50, r=50, t=50, b=50),  
-    legend_title_text="Leyenda"       
+    xaxis_title="Horas",
+    yaxis_title="Frecuencia",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    legend_title_text="Leyenda"
 )
 
 
@@ -398,21 +392,19 @@ fig_hist2 = px.histogram(
 
 # Personalizar el color del histograma
 fig_hist2.update_traces(
-    marker_color='midnightblue',  
-    marker_line_color='black',  
-    marker_line_width=1.5       
+    marker_color='midnightblue',
+    marker_line_color='black',
+    marker_line_width=1.5
 )
 
 # Ajustar diseño del gráfico
 fig_hist2.update_layout(
     xaxis=dict(range=[0, 1500]),
-    xaxis_title="Horas",             
-    yaxis_title="Frecuencia",        
-    plot_bgcolor="white",           
-    paper_bgcolor="white",           
-    title_font=dict(size=20),        
-    margin=dict(l=50, r=50, t=50, b=50),  
-    legend_title_text="Leyenda"      
+    xaxis_title="Horas",
+    yaxis_title="Frecuencia",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    legend_title_text="Leyenda"
 )
 
 ##########################################cambio de color 3
@@ -430,97 +422,89 @@ data_aggregated = data_sayer2.groupby('UnitID', as_index=False)['TOTAL'].sum()
 # Crear el gráfico de barras con los costos totales por unidad
 fig_costos_agrupados = px.bar(
     data_aggregated,
-    x='UnitID',  # Eje X: Unidad
-    y='TOTAL',   # Eje Y: Suma total de costos
+    x='UnitID',
+    y='TOTAL',
     title='Costos totales agrupados por unidad',
-    color='UnitID',  # Color por unidad
-    color_discrete_sequence=color_list_hex,  # Colores personalizados
+    color='UnitID',
+    color_discrete_sequence=color_list_hex,
 )
 
 # Personalizar el diseño del gráfico
 fig_costos_agrupados.update_layout(
-    xaxis_title="Unidad",        # Etiqueta del eje X
-    yaxis_title="Costo Total",   # Etiqueta del eje Y
-    plot_bgcolor="white",        # Fondo blanco
-    paper_bgcolor="white",       # Fondo general blanco
-    title_font=dict(size=20),    # Tamaño de la fuente del título
-    margin=dict(l=50, r=50, t=50, b=50),  # Márgenes del gráfico
-    xaxis=dict(tickangle=-45),   # Rotar las etiquetas del eje X
-    bargap=0.2                   # Ajustar el espacio entre barras
+    xaxis_title="Unidad",
+    yaxis_title="Costo Total",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    xaxis=dict(tickangle=-45),
+    bargap=0.2
 )
 
 ###################################################################################cambio de color 
 # Crear histograma con Plotly
 fig_hist_corrective = px.histogram(
-    sayer_maint2_byUnit_corrective,  # DataFrame con datos correctivos
-    x='RepairCount',  # Eje X: Frecuencia de mantenimiento correctivo
-    nbins=10,  # Número de bins ajustable
+    sayer_maint2_byUnit_corrective,
+    x='RepairCount',
+    nbins=10,
 
     title='Distribución de las frecuencias de mantenimiento correctivo.',
-    color_discrete_sequence=['midnightblue'],  # Color personalizado
+    color_discrete_sequence=['midnightblue'],
 )
 
 # Ajustar diseño del gráfico
 fig_hist_corrective.update_layout(
-    xaxis_title="Frecuencia de mantenimiento correctivo",  # Etiqueta del eje X
-    yaxis_title="Cantidad de unidades",  # Etiqueta del eje Y
-    plot_bgcolor="white",  # Fondo blanco
-    paper_bgcolor="white",  # Fondo blanco
-    title_font=dict(size=20),  # Tamaño del título
-    margin=dict(l=50, r=50, t=50, b=50),  # Márgenes
-    bargap=0.1  # Espaciado entre barras
+    xaxis_title="Frecuencia de mantenimiento correctivo",
+    yaxis_title="Cantidad de unidades",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    bargap=0.1
 )
 
 # Personalizar las trazas
 fig_hist_corrective.update_traces(
-    marker_line_color='black',  # Bordes negros
-    marker_line_width=1.5  # Grosor del borde
+    marker_line_color='black',
+    marker_line_width=1.5
 )
 
 ############################################################################cambio color
 fig_hist_preventive = px.histogram(
-    sayer_maint2_byUnit_preventive,  # DataFrame con datos preventivos
-    x='RepairCount',  # Eje X: Frecuencia de mantenimiento preventivo
+    sayer_maint2_byUnit_preventive,
+    x='RepairCount',
     nbins=10,  # Número de bins ajustable
     title='Distribución de las frecuencias de mantenimiento preventivo.',
-    color_discrete_sequence=['midnightblue'],  # Color personalizado
+    color_discrete_sequence=['midnightblue'],
 )
 
 # Ajustar diseño del gráfico
 fig_hist_preventive.update_layout(
-    xaxis_title="Frecuencia de mantenimiento preventivo",  # Etiqueta del eje X
-    yaxis_title="Cantidad de unidades",  # Etiqueta del eje Y
-    plot_bgcolor="white",  # Fondo blanco
-    paper_bgcolor="white",  # Fondo blanco
-    title_font=dict(size=20),  # Tamaño del título
-    margin=dict(l=50, r=50, t=50, b=50),  # Márgenes
-    bargap=0.1  # Espaciado entre barras
+    xaxis_title="Frecuencia de mantenimiento preventivo",
+    yaxis_title="Cantidad de unidades",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    bargap=0.1
 )
 
 # Personalizar las trazas
 fig_hist_preventive.update_traces(
-    marker_line_color='black',  # Bordes negros
-    marker_line_width=1.5  # Grosor del borde
+    marker_line_color='black',
+    marker_line_width=1.5
 )
 ################################################################################cambio de color 
 # Crear histograma con Plotly
 fig_hist_costos = px.histogram(
-    data_sayer2,  # DataFrame con datos
-    x='TOTAL',  # Eje X: Costos de mantenimiento
-    nbins=20,  # Número de bins ajustable
+    data_sayer2,
+    x='TOTAL',
+    nbins=20,
     title='Distribución de los costos de mantenimiento.',
-    color_discrete_sequence=['midnightblue'],  # Color personalizado
+    color_discrete_sequence=['midnightblue'],
 )
 
 # Ajustar diseño del gráfico
 fig_hist_costos.update_layout(
-    xaxis_title="Costo de mantenimiento",  # Etiqueta del eje X
-    yaxis_title="Frecuencia",  # Etiqueta del eje Y
-    plot_bgcolor="white",  # Fondo blanco
-    paper_bgcolor="white",  # Fondo blanco general
-    title_font=dict(size=20),  # Tamaño del título
-    margin=dict(l=50, r=50, t=50, b=50),  # Márgenes
-    bargap=0.1  # Espaciado entre barras
+    xaxis_title="Costo de mantenimiento",
+    yaxis_title="Frecuencia",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    bargap=0.1
 )
 
 # Personalizar las trazas
@@ -543,7 +527,6 @@ figures = {
                 ).update_layout(
                     xaxis_title="Unidad",
                     yaxis_title="Cantidad de reparaciones",
-                    title_font=dict(size=20),
                     xaxis=dict(
                         categoryorder='total descending',
                         showgrid=False,
@@ -553,7 +536,7 @@ figures = {
                     ),
                     plot_bgcolor="white",
                     paper_bgcolor="white",
-                    barmode='group',    
+                    barmode='group',
                 ),
     'figure4' : figure4,
 
