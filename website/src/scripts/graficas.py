@@ -1,140 +1,70 @@
+# ============================== Librerías =======================================================
 import pandas as pd
 from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
+from plotly.subplots import make_subplots
 from matplotlib.colors import LinearSegmentedColormap
 
-# Cargar los datos
-data_sayer = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/data_sayer2.csv')
+# ============================== Carga de datos ==================================================
+data_sayer = pd.read_csv('./assets/data_sayer.csv')
+data_sayer2 = pd.read_csv('./assets/data_sayer2.csv')
+sayer_maint2_byUnit_corrective = pd.read_csv("./assets/sayer_maint2_byUnit_corrective.csv")
+sayer_maint2_byUnit = pd.read_csv("./assets/sayer_maint2_byUnit.csv")
+sayer_maint2_byUnit_preventive = pd.read_csv("./assets/sayer_maint2_byUnit_preventive.csv")
 
 
-
-
-
-####################################### Ajustes de datos
-# Asegurar el formato correcto de las columnas
+# ============================== Preprocesamiento de datos =======================================
 # Convertir 'OpenedDate' a formato datetime
-data_sayer['OpenedDate'] = pd.to_datetime(data_sayer['OpenedDate'])
+data_sayer2['OpenedDate'] = pd.to_datetime(data_sayer2['OpenedDate'])
+
 # Convertir 'laghoras' a valores numéricos para evitar errores
-data_sayer['laghoras'] = pd.to_numeric(data_sayer['laghoras'], errors='coerce')
-data_sayer['ClosedMonth'] = (data_sayer['OpenedDate'] + pd.to_timedelta(data_sayer['lagdias'], unit='d')).dt.month
+data_sayer2['laghoras'] = pd.to_numeric(data_sayer2['laghoras'], errors='coerce')
 
+# Renombrar 'OpenedTrimester' a 'OpenedCuatrimester'
+data_sayer2['OpenedCuatrimester'] = data_sayer2['OpenedTrimester']
 
-# Crear la columna 'OpenedCuatrimester' basada en los meses
-def calculate_cuatrimester(month):
-    if month in [1, 2, 3, 4]:
-        return 1  # Cuatrimestre 1
-    elif month in [5, 6, 7, 8]:
-        return 2  # Cuatrimestre 2
-    elif month in [9, 10, 11, 12]:
-        return 3  # Cuatrimestre 3
-    else:
-        return None
-    
+# Crear df para las unidades tipo 'TRACTOR'
+sayer_maint2_tractos = sayer_maint2_byUnit[sayer_maint2_byUnit['UnitType'] == 'TRACTOR']
 
-# Función para calcular el promedio de días entre reparaciones
-def meanBtwnRepairs(dates):
-    if len(dates) > 1:
-        dates = sorted(dates)  # Ordenar las fechas
-        # Calcular diferencias entre fechas consecutivas y regresar el promedio en días
-        return pd.Series(dates).diff().mean().days
-    else:
-        return None  # Si solo hay una fecha
-
-
-# Función para calcular el promedio de días entre reparaciones
-def meanBtwnRepairsHours(dates):
-    if len(dates) > 1:
-        dates = sorted(dates)  # Ordenar las fechas
-        # Calcular diferencias entre fechas consecutivas y regresar el promedio en horas
-        return pd.Series(dates).diff().mean().total_seconds() / 3600
-    else:
-        return None  # Si solo hay una fecha
-    
-
-data_sayer['OpenedCuatrimester'] = data_sayer['OpenedDate'].dt.month.apply(calculate_cuatrimester)
-
-# Agrupar los datos por 'UnitID' y 'UnitType' para obtener métricas agregadas
-sayer_maint2_byUnit = data_sayer.groupby(['UnitID', 'UnitType']).agg(
-    RepairCount=('OpenedDate', 'size'),  # Conteo de reparaciones por unidad
-    RepairDates=('OpenedDate', lambda x: list(
-        x + pd.to_timedelta(data_sayer.loc[x.index, 'laghoras'], unit='h')))  # Agregar horas a las fechas de apertura
-).reset_index()
-
-sayer_maint2_byUnit_byRepReason = data_sayer.groupby(
-                                    ['UnitID', 'UnitType', 'UnitYear', 'JobTypeSummary']).agg(
-                                        RepairCount=('OpenedDate', 'size'),
-                                        RepairDates=('OpenedDate', lambda x:
-                                            list(x + pd.to_timedelta(data_sayer.loc[x.index, 'laghoras'], unit='h')))
-                                    ).reset_index()
-
-# Crear una nueva columna para el promedio de días entre reparaciones
-sayer_maint2_byUnit_byRepReason['AvgDaysBetweenRepairs'] = sayer_maint2_byUnit_byRepReason['RepairDates'].apply(meanBtwnRepairs)
-# Crear una nueva columna para el promedio de horas entre reparaciones
-sayer_maint2_byUnit_byRepReason['AvgHoursBetweenRepairs'] = sayer_maint2_byUnit_byRepReason['RepairDates'].apply(meanBtwnRepairsHours)
-# Asegurarse de que las fechas estén en formato datetime
-sayer_maint2_byUnit_byRepReason['RepairDates'] = sayer_maint2_byUnit_byRepReason['RepairDates'].apply(lambda x: pd.to_datetime(x))
-
-# Crear un nuevo DataFrame con las reparaciones preventivas
-sayer_maint2_byUnit_preventive = sayer_maint2_byUnit_byRepReason[
-                                    sayer_maint2_byUnit_byRepReason['JobTypeSummary'] == 'PREVENTIVO'].copy()
-
-# Filtrar solo las unidades tipo 'TRACTOR'
-filtered_data = sayer_maint2_byUnit[sayer_maint2_byUnit['UnitType'] == 'TRACTOR']
 # Filtrar datos donde 'RepairCount' es mayor que 0
-filtered_data_with_repair = filtered_data[filtered_data['RepairCount'] > 0].sort_values('RepairCount', ascending=False)
-filtered_data_with_repair['UnitID'] = filtered_data_with_repair['UnitID'].astype(str)
+sayer_maint2_tractos = sayer_maint2_tractos[sayer_maint2_tractos['RepairCount'] > 0].sort_values('RepairCount', ascending=False)
+
+# Convertir 'UnitID' a string para evitar errores
+sayer_maint2_tractos['UnitID'] = sayer_maint2_tractos['UnitID'].astype(str)
 
 
-################################### COLOR TDR
-# Definir el colormap
+# ============================== Paleta de colores graficas ======================================
 positions = [0, 0.5, 1]
 colors = ['midnightblue', 'lightgray', 'darkorange']
 tdr_cmap = LinearSegmentedColormap.from_list('tdr_cmap', list(zip(positions, colors)))
 
 # Generar una lista de colores interpolados para cada barra
-num_bars = len(filtered_data_with_repair)  # Número de barras
+num_bars = len(sayer_maint2_tractos)  # Número de barras
 color_list = [tdr_cmap(i / (num_bars - 1)) for i in range(num_bars)]
 
 # Convertir colores a formato hexadecimal
 color_list_hex = ['#%02x%02x%02x' % (int(c[0]*255), int(c[1]*255), int(c[2]*255)) for c in color_list]
 
 
-
-####################################### Diccionario de figuras
-# Figura de ejemplo para pruebas
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
-
-
-####################################### DataFrame por año
-# Creacion de una columna 'MaintenanceYear' para identificar el año de mantenimiento
-data_sayer['MaintenanceYear'] = data_sayer['OpenedDate'].dt.year
+# ============================== df's por año ====================================================
 # Creacion de un DataFrame para los mantenimientos del año 2022
-data_sayer2_2022 = data_sayer[data_sayer['MaintenanceYear'] == 2022]
+data_sayer2_2022 = data_sayer2[data_sayer2['MaintenanceYear'] == 2022]
 
 # Creacion de un DataFrame para los mantenimientos del año 2023
-data_sayer2_2023 = data_sayer[data_sayer['MaintenanceYear'] == 2023]
+data_sayer2_2023 = data_sayer2[data_sayer2['MaintenanceYear'] == 2023]
 
 # Creacion de un DataFrame para los mantenimientos del año 2024
-data_sayer2_2024 = data_sayer[data_sayer['MaintenanceYear'] == 2024]
+data_sayer2_2024 = data_sayer2[data_sayer2['MaintenanceYear'] == 2024]
 
 
+# ============================== Gráficas ========================================================
 
-################################################ SUBGRAFICAS POR YEAR
-
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-
-# Crear subplots con 1 fila y 3 columnas
+# Distribucion de manteniminientos por tipo a lo largo de los años ===============================
 figure4 = make_subplots(
-    rows=1, cols=3,  # Una fila, tres columnas
-    shared_yaxes=True,  # Compartir el eje Y
-    subplot_titles=("2022", "2023", "2024")  # Títulos para cada subplot
+    rows=1, cols=3,
+    shared_yaxes=True,  
+    subplot_titles=("2022", "2023", "2024")
 )
-
 
 # Gráfica para 2022
 fig_2022 = px.histogram(
@@ -165,13 +95,13 @@ fig_2024 = px.histogram(
 
 # Agregar las trazas de cada gráfica a las subplots
 for trace in fig_2022['data']:
-    figure4.add_trace(trace, row=1, col=1)  # Añadir a la primera columna
+    figure4.add_trace(trace, row=1, col=1)
 for trace in fig_2023['data']:
-    figure4.add_trace(trace, row=1, col=2)  # Añadir a la segunda columna
+    figure4.add_trace(trace, row=1, col=2)
 for trace in fig_2024['data']:
-    figure4.add_trace(trace, row=1, col=3)  # Añadir a la tercera columna
+    figure4.add_trace(trace, row=1, col=3)
 
-# Configurar diseño de la figura combinada
+# Configurar diseño de la figura
 figure4.update_layout(
     title="Cantidad de reparaciones por mes (2022-2024)",
     xaxis1=dict(
@@ -194,31 +124,26 @@ figure4.update_layout(
     ),
     yaxis_title="Cantidad de reparaciones",
     plot_bgcolor="white",
-    paper_bgcolor="white",
-    height=800,  # Altura del gráfico
-    width=1700,  # Ancho del gráfico
-    margin=dict(t=50, l=50, b=50, r=50)
+    paper_bgcolor="white"
 )
+# ================================================================================================
 
-
-###################################################################SUBGRAFICAS POR CUATRIMESTRES
-# Crear subplots con 1 fila y 3 columnas
+# Distribucion de mantenimientos por tipo a lo largo de los años (dividido por cuatrimestres) ====
 figure_cuatrimester = make_subplots(
-    rows=1, cols=3,  # Una fila, tres columnas
-    shared_yaxes=True,  # Compartir el eje Y
-    subplot_titles=("2022", "2023", "2024")  # Títulos para cada subplot
+    rows=1, cols=3,
+    shared_yaxes=True,
+    subplot_titles=("2022", "2023", "2024")
 )
-
 
 # Gráfica para 2022
 fig_cuatrimester_2022 = px.histogram(
     data_sayer2_2022,
     x='OpenedCuatrimester',
     color='JobTypeSummary',
-    category_orders={'OpenedCuatrimester': [1, 2, 3]},  # Ordenar cuatrimestres
+    category_orders={'OpenedCuatrimester': [1, 2, 3]},
     color_discrete_map={'CORRECTIVO': 'midnightblue', 'PREVENTIVO': 'lightgray', 'OTROS': 'darkorange'},
     title="Cantidad de reparaciones por cuatrimestre en 2022"
-).update_traces(showlegend=True)  # Mostrar leyenda
+).update_traces(showlegend=True)
 
 # Gráfica para 2023
 fig_cuatrimester_2023 = px.histogram(
@@ -228,7 +153,7 @@ fig_cuatrimester_2023 = px.histogram(
     category_orders={'OpenedCuatrimester': [1, 2, 3]},
     color_discrete_map={'CORRECTIVO': 'midnightblue', 'PREVENTIVO': 'lightgray', 'OTROS': 'darkorange'},
     title="Cantidad de reparaciones por cuatrimestre en 2023"
-).update_traces(showlegend=False)  # Ocultar leyenda duplicada
+).update_traces(showlegend=False)
 
 # Gráfica para 2024
 fig_cuatrimester_2024 = px.histogram(
@@ -238,7 +163,7 @@ fig_cuatrimester_2024 = px.histogram(
     category_orders={'OpenedCuatrimester': [1, 2, 3]},
     color_discrete_map={'CORRECTIVO': 'midnightblue', 'PREVENTIVO': 'lightgray', 'OTROS': 'darkorange'},
     title="Cantidad de reparaciones por cuatrimestre en 2024"
-).update_traces(showlegend=False)  # Ocultar leyenda duplicada
+).update_traces(showlegend=False)
 
 # Agregar las trazas de cada gráfica a las subplots
 for trace in fig_cuatrimester_2022['data']:
@@ -248,46 +173,34 @@ for trace in fig_cuatrimester_2023['data']:
 for trace in fig_cuatrimester_2024['data']:
     figure_cuatrimester.add_trace(trace, row=1, col=3)  # Añadir a la tercera columna
 
-
 # Configurar diseño de la figura combinada
 figure_cuatrimester.update_layout(
     title="Cantidad de reparaciones por cuatrimestre (2022-2024)",
     xaxis1=dict(
         tickmode='array',
         tickvals=[1, 2, 3],
-        ticktext=['Ene-Abr', 'May-Ago', 'Sep-Dic'],  # Etiquetas para cuatrimestres
+        ticktext=['Ene-Abr', 'May-Ago', 'Sep-Dic'],
         title_text="Cuatrimestre"
     ),
     xaxis2=dict(
         tickmode='array',
         tickvals=[1, 2, 3],
-        ticktext=['Ene-Abr', 'May-Ago', 'Sep-Dic'],  # Repetir etiquetas para el segundo eje
+        ticktext=['Ene-Abr', 'May-Ago', 'Sep-Dic'],
         title_text="Cuatrimestre"
     ),
     xaxis3=dict(
         tickmode='array',
         tickvals=[1, 2, 3],
-        ticktext=['Ene-Abr', 'May-Ago', 'Sep-Dic'],  # Repetir etiquetas para el tercer eje
+        ticktext=['Ene-Abr', 'May-Ago', 'Sep-Dic'],
         title_text="Cuatrimestre"
     ),
     yaxis_title="Cantidad de reparaciones",
     plot_bgcolor="white",
     paper_bgcolor="white",
-    height=800,
-    width=1700,
-    margin=dict(t=50, l=50, b=50, r=50)
 )
+# ================================================================================================
 
-###############################################################Frecuencia por tipo de unidad 
-
-
-# Preparar los datos para el histograma
-# Filtrar datos para solo incluir mantenimientos correctivos
-sayer_maint2_byUnit_corrective = sayer_maint2_byUnit_byRepReason[
-                                    sayer_maint2_byUnit_byRepReason['JobTypeSummary'] == 'CORRECTIVO'].copy()
-
-
-
+# Frecuencia por tipo de unidad ==================================================================
 corrective_frequencies = (
     sayer_maint2_byUnit_corrective.groupby('UnitType')['RepairCount']
     .sum()
@@ -295,14 +208,13 @@ corrective_frequencies = (
     .rename(columns={"RepairCount": "Frequency"})
 )
 
-# Crear la gráfica con Plotly Express
 fig_corrective_histogram = px.bar(
     corrective_frequencies,
     x='UnitType',
     y='Frequency',
     color='UnitType',
     title='Frecuencia de mantenimiento correctivo por tipo de unidad',
-    color_discrete_map={  # Asignar colores personalizados
+    color_discrete_map={
         'TRACTOR': 'midnightblue',
         'TRAILER': 'lightgray',
         'DOLLY': 'darkorange'
@@ -311,25 +223,23 @@ fig_corrective_histogram = px.bar(
 
 # Ajustar diseño
 fig_corrective_histogram.update_layout(
-    xaxis_title="Tipo de unidad",  # Etiqueta del eje X
-    yaxis_title="Frecuencia",     # Etiqueta del eje Y
-    title_font=dict(size=20),     # Tamaño de fuente del título
-    plot_bgcolor="white",         # Fondo blanco para el área de trazado
-    paper_bgcolor="white",        # Fondo blanco general
-    margin=dict(l=50, r=50, t=50, b=50)  # Márgenes personalizados
+    xaxis_title="Tipo de unidad",
+    yaxis_title="Frecuencia",
+    title_font=dict(size=20),
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    margin=dict(l=50, r=50, t=50, b=50)
 )
 
 # Configurar bordes de las barras
 fig_corrective_histogram.update_traces(
-    marker_line_color='black',  # Bordes negros para las barras
-    marker_line_width=1.5       # Ancho del borde
+    marker_line_color='black',
+    marker_line_width=1.5
 )
+# ================================================================================================
 
-
-#####################################################################################CANTIDAD ACUMULATIVA
-# Ordenar los datos por fecha de apertura
-data_sayer['OpenedDate'] = pd.to_datetime(data_sayer['OpenedDate'])  # Asegurarse de que OpenedDate sea datetime
-df_temp = data_sayer.sort_values(by='OpenedDate')
+# Acumulado de registros por mes =================================================================
+df_temp = data_sayer2.sort_values(by='OpenedDate')
 
 # Crear una columna para el mes y año de apertura
 df_temp['MonthYear'] = df_temp['OpenedDate'].dt.month
@@ -384,7 +294,69 @@ fig_cumulative.add_vline(x=12.5, line_width=1.5, line_dash="dash", line_color="l
 
 # Bordes en las líneas
 fig_cumulative.update_traces(line=dict(width=3))
+# ================================================================================================
 
+# Gráficas individuales ==========================================================================
+graph1 = px.bar(data_sayer2, x="UnitID", y="TOTAL")
+
+graph2 = px.bar(sayer_maint2_byUnit_corrective, x='UnitID', y='RepairCount',
+                title="Reparaciones por UnitID",
+                labels={"x":"Unidad", "y":"Cuenta de reparaciones"},
+                text_auto= True)
+
+graph3 = px.histogram(sayer_maint2_byUnit, x="AvgHoursBetweenRepairs", 
+                      title="Distribución de Tiempo promedio entre reparaciones", 
+                      labels={"x":"Horas", "y":"Unidades"},
+                      text_auto= True
+                      )
+
+graph4 = px.box(sayer_maint2_byUnit, x="AvgHoursBetweenRepairs", 
+                      title="Boxplot de Tiempo promedio entre reparaciones",
+                      points="all"
+                      )
+
+graph5 = px.histogram(data_sayer2, x="laghoras", 
+                      title="Distribución de Tiempo promedio de reparaciones", 
+                      labels={"x":"Horas", "y":"Unidades"},
+                      text_auto= True
+                      )
+
+graph6 = px.box(data_sayer2, x="laghoras", 
+                      title="Boxplot de Tiempo promedio de reparaciones",
+                      points="all"
+                      )
+
+graph7 = px.histogram(data_sayer2, x="TOTAL",
+                      title="Distribución de costos totales de mantenimiento",
+                      labels={"x":"Costos", "y":"Frecuencia"},
+                      text_auto = True
+                      )
+
+graph8 = px.histogram(sayer_maint2_byUnit_corrective, x="RepairCount",
+                      title="Distribución de frecuencia de mantenimiento correctivo",
+                      text_auto= True
+                      )
+
+graph9 = px.histogram(sayer_maint2_byUnit_preventive, x="RepairCount",
+                      title="Distribución de frecuencia de mantenimiento preventivo",
+                      text_auto= True
+                      )
+
+graph10 = px.box(sayer_maint2_byUnit_preventive, x="RepairCount",
+                 title="Boxplot de Cantidad de reparaciones por Unidad",
+                 points="all"
+                 )
+
+graph11 = px.line(data_sayer, x="OpenedDate", y="TOTAL",
+                  title="Costos 2022-2024",
+                  labels={"x":"Tiempo", "y":"Costo"}
+                  )
+
+graph12 = px.bar(data_sayer, y="Jobcode", x="TOTAL",
+                 title="Costos por Jobcode",
+                 text_auto=True
+                 )
+# ================================================================================================
 
 ################################################################ cambiar color graficas 
 # Crear la figura base para el histograma
@@ -392,7 +364,7 @@ fig_hist = px.histogram(
     sayer_maint2_byUnit_corrective,
     x='AvgHoursBetweenRepairs',
     nbins=30,  # Número de bins en el histograma
-    title='Distribución de las "horas promedio" entre reparaciones (MTBF)',
+    title='Distribución de las horas promedio entre reparaciones (MTBF)',
 )
 
 # Ajustar los colores del histograma
@@ -401,8 +373,6 @@ fig_hist.update_traces(
     marker_line_color='black',   
     marker_line_width=1.5        
 )
-
-
 
 # Ajustar diseño del gráfico
 fig_hist.update_layout(
@@ -420,7 +390,7 @@ fig_hist.update_layout(
 ###############################################################################cambio de color 2
 fig_hist2 = px.histogram(
 
-    data_sayer,
+    data_sayer2,
     x='laghoras',
     nbins=35,  # Número de bins
     title='Distribución de las "horas promedio" en reparaciones (MTTR).',
@@ -432,8 +402,6 @@ fig_hist2.update_traces(
     marker_line_color='black',  
     marker_line_width=1.5       
 )
-
-
 
 # Ajustar diseño del gráfico
 fig_hist2.update_layout(
@@ -452,12 +420,12 @@ fig_hist2.update_layout(
 colors = ['midnightblue', 'lightgray', 'darkorange']
 custom_cmap = LinearSegmentedColormap.from_list('custom_cmap', list(zip(positions, colors))) 
 # Generar una lista de colores interpolados
-n_colors = len(data_sayer['UnitID'].unique())  # Número de unidades únicas
+n_colors = len(data_sayer2['UnitID'].unique())  # Número de unidades únicas
 color_list_rgb = [custom_cmap(i / (n_colors - 1)) for i in range(n_colors)]
 color_list_hex = ['#%02x%02x%02x' % (int(r*255), int(g*255), int(b*255)) for r, g, b, _ in color_list_rgb]
 
 # Agrupar los costos totales por cada unidad
-data_aggregated = data_sayer.groupby('UnitID', as_index=False)['TOTAL'].sum()
+data_aggregated = data_sayer2.groupby('UnitID', as_index=False)['TOTAL'].sum()
 
 # Crear el gráfico de barras con los costos totales por unidad
 fig_costos_agrupados = px.bar(
@@ -537,7 +505,7 @@ fig_hist_preventive.update_traces(
 ################################################################################cambio de color 
 # Crear histograma con Plotly
 fig_hist_costos = px.histogram(
-    data_sayer,  # DataFrame con datos
+    data_sayer2,  # DataFrame con datos
     x='TOTAL',  # Eje X: Costos de mantenimiento
     nbins=20,  # Número de bins ajustable
     title='Distribución de los costos de mantenimiento.',
@@ -557,55 +525,43 @@ fig_hist_costos.update_layout(
 
 # Personalizar las trazas
 fig_hist_costos.update_traces(
-    marker_line_color='black',  # Bordes negros
-    marker_line_width=1.5  # Grosor del borde
+    marker_line_color='black',
+    marker_line_width=1.5 
 )
+# ================================================================================================
 
-
-# Diccionario de gráficos para distintas rutas
+# ============================== Diccionario de figuras ==========================================
 figures = {
-    # Figura de ejemplo
-    "figure1": px.bar(df, x="Fruit", y="Amount", color="City", barmode="group"),
-    
-    # Figura de línea simple
-    "figure2": px.line(data_sayer, x="lagdias", y="TOTAL"),
-    
-    # Figura de barras para el conteo de reparaciones por unidad
     "figure3": px.bar(
-    filtered_data_with_repair,
-    x='UnitID',
-    y='RepairCount',
-    title='Cantidad de reparaciones por unidad de la flota de Sayer Full'
-).update_traces(
-    marker_color=color_list_hex,  # Asignar colores interpolados
-      # Bordes negros
-    marker_line_width=1.5  # Ancho del borde
-).update_layout(
-    xaxis_title="Unidad",  # Etiqueta del eje x
-    yaxis_title="Cantidad de reparaciones",  # Etiqueta del eje y
-    title_font=dict(size=20),  # Tamaño de fuente del título
-    xaxis=dict(
-        categoryorder='total descending',  # Ordenar barras por RepairCount descendente
-        showgrid=False,  # Quitar las líneas de la cuadrícula en el eje x
-        tickmode='array',  # Mostrar solo etiquetas existentes
-        tickvals=filtered_data_with_repair['UnitID'],  # Etiquetas visibles (únicamente las unidades con datos)
-        ticktext=filtered_data_with_repair['UnitID'],  # Etiquetas visibles en el gráfico
-    ),
-    plot_bgcolor="white",  # Fondo blanco del área de trazado
-    paper_bgcolor="white",  # Fondo blanco general
-    barmode='group',  # Agrupación estándar de barras
-    margin=dict(l=50, r=50, t=50, b=50)  # Reducir márgenes para que no quede espacio
-
-    
-),
+                    sayer_maint2_tractos,
+                    x='UnitID',
+                    y='RepairCount',
+                    title='Cantidad de reparaciones por unidad de la flota de Sayer Full'
+                ).update_traces(
+                    marker_color=color_list_hex,
+                    marker_line_width=1.5
+                ).update_layout(
+                    xaxis_title="Unidad",
+                    yaxis_title="Cantidad de reparaciones",
+                    title_font=dict(size=20),
+                    xaxis=dict(
+                        categoryorder='total descending',
+                        showgrid=False,
+                        tickmode='array',
+                        tickvals=sayer_maint2_tractos['UnitID'],
+                        ticktext=sayer_maint2_tractos['UnitID'],
+                    ),
+                    plot_bgcolor="white",
+                    paper_bgcolor="white",
+                    barmode='group',    
+                ),
     'figure4' : figure4,
-
 
     'figure5' : figure_cuatrimester,
 
     'figure6' : fig_corrective_histogram,
 
-    'figure7' : fig_cumulative, 
+    'figure7' : fig_cumulative,
 
     'figure8' : fig_hist,
 
@@ -617,12 +573,34 @@ figures = {
 
     'figure12' : fig_hist_preventive,
 
-    'figure13' : fig_hist_costos
+    'figure13' : fig_hist_costos,
 
+    "figuren1": fig_costos_agrupados,
 
+    "figuren2": graph2,
+
+    "figuren3": fig_hist,
+
+    "figuren4": graph4,
+
+    "figuren5": fig_hist2,
+
+    "figuren6": graph6,
+
+    "figuren7": fig_hist_costos,
+
+    "figuren8": fig_hist_corrective,
+
+    "figuren9": fig_hist_preventive, 
+
+    "figuren10": graph10,
+
+    "figuren11": graph11,
+
+    "figuren12": graph12
 }
 
-####################################### Lógica de la App
+# ============================== Aplicación Dash =================================================
 # Crear la aplicación Dash
 app = Dash(__name__)
 
@@ -638,8 +616,8 @@ app.layout = html.Div(children=[
     Input('url', 'pathname')
 )
 def display_page(pathname):
-    # Extract the figure name from the URL
     figure_name = pathname.lstrip("/")
+    
     if figure_name in figures:
         figure = figures[figure_name]
         figure.update_layout(
@@ -655,7 +633,6 @@ def display_page(pathname):
                         'padding': '0',
                         'height': '100%',
                         'width': '100%',
-                        'flex': '1 1 auto'
                     },
                 ),
             ],
@@ -665,10 +642,6 @@ def display_page(pathname):
                 'padding': '0',
                 'width': '100%',
                 'height': '90vh',
-                'overflow': 'hidden',  # Prevent scrolling
-                'display': 'flex',
-                'flexDirection': 'column',
-                'flex': '1 1 auto'
             },
         )
 

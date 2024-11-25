@@ -3,7 +3,6 @@ import SidebarJSX from "../../components/common/Sidebar";
 import {DrawerJSX, handleDrawerToggle} from "../../components/common/SidebarDrawer";
 import TableJSX from "../../hooks/createTable";
 import { useNavigation } from "../../hooks/useNavigationBar";
-import logo from "../../assets/tdr-logo.png";
 
 const InsightsJSX = () => {
 
