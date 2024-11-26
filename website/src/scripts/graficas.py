@@ -588,10 +588,23 @@ figures = {
 app = Dash(__name__)
 
 # Layout general con un elemento para seguimiento de URL
-app.layout = html.Div(children=[
-    dcc.Location(id='url', refresh=False),  # Rastrea la URL para mostrar diferentes figuras
-    html.Div(id='page-content')  # Contenedor dinámico para el contenido basado en la ruta
-])
+app.layout = html.Div(
+[
+    dcc.Location(id="url", refresh=True),
+    dcc.Loading(
+        id="loading",
+        type="circle",  # 'circle' | 'dot' | 'default' | 'cube'
+        children=html.Div(id="page-content"),
+        fullscreen=True,
+        style={
+            "position": "fixed",
+            "top": "50%",
+            "left": "50%",
+            "transform": "translate(-50%, -50%)",
+        },
+    )
+]
+)
 
 # Callback para actualizar el contenido dinámicamente basado en la URL
 @app.callback(
