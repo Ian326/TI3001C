@@ -512,6 +512,43 @@ fig_hist_costos.update_traces(
     marker_line_color='black',
     marker_line_width=1.5 
 )
+################################################################################cambio de color 
+
+# Agrupar los costos totales por cada JobCode
+data_aggregated_jobcode = data_sayer.groupby('Jobcode', as_index=False)['TOTAL'].sum()
+
+# Filtrar los 10 JobCode más costosos
+top_10_jobcode = data_aggregated_jobcode.nlargest(10, 'TOTAL')
+
+# Crear el gráfico de barras con los costos totales de los 10 JobCode más costosos
+fig_top_costos_jobcode = px.bar(
+    top_10_jobcode,
+    x='Jobcode',  # Eje X: JobCode
+    y='TOTAL',    # Eje Y: Suma total de costos
+    title='Top 10 Jobcode más costosos',
+    color='TOTAL',  # Color según el valor de TOTAL
+    color_continuous_scale=[
+        'midnightblue',  # Azul oscuro
+        'lightgray',     # Gris claro
+        'darkorange'     # Naranja oscuro
+    ],  # Gradiente de colores
+)
+
+# Personalizar el diseño del gráfico
+fig_top_costos_jobcode.update_layout(
+    xaxis_title="Jobcode",        # Etiqueta del eje X
+    yaxis_title="Costo Total",    # Etiqueta del eje Y
+    plot_bgcolor="white",         # Fondo blanco
+    paper_bgcolor="white",        # Fondo general blanco
+    title_font=dict(size=20),     # Tamaño de la fuente del título
+    margin=dict(l=50, r=50, t=50, b=50),  # Márgenes del gráfico
+    xaxis=dict(tickangle=-45),    # Rotar las etiquetas del eje X
+    bargap=0.2                    # Ajustar el espacio entre barras
+)
+
+
+
+
 # ================================================================================================
 
 # ============================== Diccionario de figuras ==========================================
@@ -580,7 +617,7 @@ figures = {
 
     "figuren11": graph11,
 
-    "figuren12": graph12
+    "figuren12": fig_top_costos_jobcode
 }
 
 # ============================== Aplicación Dash =================================================
