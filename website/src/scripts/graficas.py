@@ -514,6 +514,69 @@ fig_hist_costos.update_traces(
 )
 # ================================================================================================
 
+# Acumulado de costos por mes ===================================================================
+df_temp = data_sayer2.sort_values(by='OpenedDate')
+
+df_temp = data_sayer2.groupby('OpenedDate', as_index=False).agg({'TOTAL': 'sum'})
+
+# Set 'OpenedDate' as the index
+df_temp = data_sayer2.set_index('OpenedDate')
+
+# Resample to fill in missing dates and sum 'TOTAL'
+df_temp = df_temp.resample('D').sum()
+
+# Fill missing 'TOTAL' values with the last known value or 0
+df_temp['TOTAL'] = df_temp['TOTAL'].fillna(method='ffill').fillna(0)
+
+# Reset the index to make 'OpenedDate' a column again
+df_temp = df_temp.reset_index()
+
+# Continue with the rest of your code
+df_temp['MonthDay'] = df_temp['OpenedDate'].dt.strftime('%m-%d')
+df_temp['MonthYear'] = df_temp['OpenedDate'].dt.month
+df_temp['MaintenanceYear'] = df_temp['OpenedDate'].dt.year
+
+# Recalculate the cumulative costs
+df_temp['CumulativeCosts'] = df_temp.groupby('MaintenanceYear')['TOTAL'].cumsum()
+
+
+
+# Crear la gráfica con Plotly
+fig_cumulative2 = px.line(
+    df_temp,
+    x='MonthDay',
+    y='CumulativeCosts',
+    color='MaintenanceYear',
+    title='Cantidad acumulativa de costos por mes',
+    color_discrete_map={
+        2022: 'midnightblue',
+        2023: 'darkgray',
+        2024: 'darkorange'
+    },
+    labels={
+        'MonthYear': 'Mes',
+        'CumulativeCosts': 'Cantidad acumulativa de costos',
+        'MaintenanceYear': 'Año'
+    }
+)
+
+# Ajustar diseño de la gráfica
+fig_cumulative2.update_layout(
+    xaxis=dict(
+        tickmode='array',
+        tickvals=list(range(1, 13)),
+        ticktext=[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        title='Mes'
+    ),
+    yaxis=dict(
+        title='Cantidad acumulativa de costos (MXN)'
+    ),
+    legend_title_text='Año',
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+)
+# ================================================================================================
+
 # ============================== Diccionario de figuras ==========================================
 figures = {
     "figure3": px.bar(
@@ -580,7 +643,9 @@ figures = {
 
     "figuren11": graph11,
 
-    "figuren12": graph12
+    "figuren12": graph12,
+
+    "figure14": fig_cumulative2,
 }
 
 # ============================== Aplicación Dash =================================================
@@ -590,7 +655,7 @@ app = Dash(__name__)
 # Layout general con un elemento para seguimiento de URL
 app.layout = html.Div(
 [
-    dcc.Location(id="url", refresh=True),
+    dcc.Location(id="url", refresh=False),
     dcc.Loading(
         id="loading",
         type="circle",  # 'circle' | 'dot' | 'default' | 'cube'
