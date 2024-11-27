@@ -7,12 +7,13 @@ from matplotlib.colors import LinearSegmentedColormap
 import plotly.graph_objects as go
 
 # ============================== Carga de datos ==================================================
-data_sayer = pd.read_csv('./assets/data_sayer.csv')
+data_sayer = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/data_sayer.csv')
 
-data_sayer2 = pd.read_csv('./assets/data_sayer2.csv')
-sayer_maint2_byUnit_corrective = pd.read_csv("./assets/sayer_maint2_byUnit_corrective.csv")
-sayer_maint2_byUnit = pd.read_csv("./assets/sayer_maint2_byUnit.csv")
-sayer_maint2_byUnit_preventive = pd.read_csv("./assets/sayer_maint2_byUnit_preventive.csv")
+data_sayer2 = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/data_sayer2.csv')
+sayer_maint2_byUnit_corrective = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit_corrective.csv')
+sayer_maint2_byUnit = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit.csv')
+sayer_maint2_byUnit_preventive = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit_preventive.csv')
+
 
 
 
@@ -928,6 +929,56 @@ figure_corrRep_year.update_layout(
     bargap=0.2,
 )
 
+# ======================================================================= grafica costo promedio por año
+# Filtrar solo los datos de 'TRAILER'
+data_trailer_avg = data_sayer2.groupby(['UnitYear', 'UnitType'])['TOTAL'].mean().reset_index()
+data_trailer_avg = data_trailer_avg[data_trailer_avg['UnitType'] == 'TRAILER']
+
+# Lista de colores personalizada
+color_list_bars = ['#F28C28', '#1A1A4F', '#C4C4C4']  # Naranja, Azul, Gris
+
+# Lista de colores personalizada
+color_list_bars = ['#F28C28', '#1A1A4F', '#C4C4C4']  # Naranja, Azul, Gris
+
+# Crear el gráfico con Plotly Express
+fig = px.bar(
+    data_trailer_avg,
+    x=data_trailer_avg['UnitYear'].astype(str),  # Convertir 'UnitYear' a string para evitar escala continua
+    y='TOTAL',
+    text='TOTAL',  # Mostrar el valor como texto en las barras
+    title="Costo promedio de mantenimiento por año (TRAILER)"
+)
+
+# Asignar colores personalizados a las barras
+fig.update_traces(
+    marker_color=color_list_bars,  # Asignar colores personalizados
+    texttemplate="$%{text:.2f}",  # Formatear las etiquetas de texto como dólares
+    textposition='outside'  # Posicionar etiquetas fuera de las barras
+)
+
+# Configuración del diseño
+fig.update_layout(
+    xaxis=dict(
+        title="Año de la Unidad",
+        tickmode='array',
+        tickvals=data_trailer_avg['UnitYear'].astype(str),  # Mostrar solo los años presentes
+        ticktext=data_trailer_avg['UnitYear'].astype(str),  # Asegurar que sean cadenas
+        categoryorder='category ascending'  # Forzar que el eje sea categórico y en orden ascendente
+    ),
+    yaxis=dict(
+        title="Costo Promedio ($)",
+        tickformat="$,.0f"  # Formato en dólares
+    ),
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    width=800,
+    height=500,
+    showlegend=False  # Ocultar la leyenda
+)
+
+
+
+
 # ============================== Diccionario de figuras ==========================================
 figures = {
     "figure3": px.bar(
@@ -1005,6 +1056,8 @@ figures = {
     'figuren14' : fig_cost_cuatri,
 
     'figuren15' : fig_pie_costs,
+
+    'figuren16' : fig
 
 }
 
