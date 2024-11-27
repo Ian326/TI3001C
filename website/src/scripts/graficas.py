@@ -1064,6 +1064,7 @@ figures = {
 # ============================== Aplicación Dash =================================================
 # Crear la aplicación Dash
 app = Dash(__name__)
+server = app.server
 
 # Layout general con un elemento para seguimiento de URL
 app.layout = html.Div(
@@ -1123,4 +1124,4 @@ def display_page(pathname):
     return html.Div("404: Figure not found", style={"textAlign": "center", "fontSize": "24px"})
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=False, host="0.0.0.0", port=8050)
