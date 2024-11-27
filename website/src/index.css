@@ -101,6 +101,8 @@ h1 {
   font-size: 2rem;
   font-weight: 600;
   color: rgb(21, 18, 59);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 h2 {
@@ -142,6 +144,8 @@ p {
 
   h1 {
     font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
   }
 
   h2 {
