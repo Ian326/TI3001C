@@ -7,12 +7,12 @@ from matplotlib.colors import LinearSegmentedColormap
 import plotly.graph_objects as go
 
 # ============================== Carga de datos ==================================================
-data_sayer = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/data_sayer.csv')
+data_sayer = pd.read_csv('./assets/data_sayer.csv')
 
-data_sayer2 = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/data_sayer2.csv')
-sayer_maint2_byUnit_corrective = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit_corrective.csv')
-sayer_maint2_byUnit = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit.csv')
-sayer_maint2_byUnit_preventive = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit_preventive.csv')
+data_sayer2 = pd.read_csv('./assets/data_sayer2.csv')
+sayer_maint2_byUnit_corrective = pd.read_csv('./assets/sayer_maint2_byUnit_corrective.csv')
+sayer_maint2_byUnit = pd.read_csv('./assets/sayer_maint2_byUnit.csv')
+sayer_maint2_byUnit_preventive = pd.read_csv('./assets/sayer_maint2_byUnit_preventive.csv')
 
 
 
