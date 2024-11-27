@@ -1,9 +1,9 @@
 const getYOffset = () => {
     // Adjust the offset according to the screen size
-    if (window.innerWidth >= 768) {
+    if (window.innerWidth >= 502) {
         return -110;
     }
-    return -150;
+    return -145;
 };
 
 export const handleClick = (e, id) => {

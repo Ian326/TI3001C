@@ -24,7 +24,7 @@ const SidebarJSX = ({ sections, activeSection, handleDrawerToggle }) => {
                 })}
             </div>
 
-            <div className="lg:hidden fixed pt-9 sm:pt-11 pl-4 sm:pl-6">
+            <div className="lg:hidden fixed pt-4 pl-4 sm:pl-6">
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"

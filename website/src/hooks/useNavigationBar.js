@@ -19,7 +19,7 @@ export const useNavigation = () => {
             const scrollPosition = window.scrollY;
 
             allSections.forEach((section) => {
-                const offsetTop = section.offsetTop - 200;
+                const offsetTop = section.offsetTop - 330;
                 const offsetHeight = section.offsetHeight;
                 const id = section.getAttribute("id");
 
