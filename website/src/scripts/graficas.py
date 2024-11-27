@@ -4,13 +4,17 @@ from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
 from plotly.subplots import make_subplots
 from matplotlib.colors import LinearSegmentedColormap
+import plotly.graph_objects as go
 
 # ============================== Carga de datos ==================================================
-data_sayer = pd.read_csv('./assets/data_sayer.csv')
-data_sayer2 = pd.read_csv('./assets/data_sayer2.csv')
-sayer_maint2_byUnit_corrective = pd.read_csv("./assets/sayer_maint2_byUnit_corrective.csv")
-sayer_maint2_byUnit = pd.read_csv("./assets/sayer_maint2_byUnit.csv")
-sayer_maint2_byUnit_preventive = pd.read_csv("./assets/sayer_maint2_byUnit_preventive.csv")
+data_sayer = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/data_sayer.csv')
+
+data_sayer2 = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/data_sayer2.csv')
+sayer_maint2_byUnit_corrective = pd.read_csv("C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit_corrective.csv")
+sayer_maint2_byUnit = pd.read_csv("C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit.csv")
+sayer_maint2_byUnit_preventive = pd.read_csv("C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit_preventive.csv")
+
+
 
 
 # ============================== Preprocesamiento de datos =======================================
@@ -256,9 +260,9 @@ fig_cumulative = px.line(
     color='MaintenanceYear',
     title='Cantidad acumulativa de registros por mes',
     color_discrete_map={
-        2022: 'midnightblue',
-        2023: 'lightgray',
-        2024: 'darkorange'
+        2022: '#000000',  # Negro para 2022
+        2023: '#191970',  # Azul Midnight para 2023
+        2024: '#F28C28'   # Naranja para 2024
     },
     labels={
         'MonthYear': 'Mes',
@@ -267,8 +271,27 @@ fig_cumulative = px.line(
     }
 )
 
+# Añadir barras a la gráfica con colores personalizados
+color_list_bars = ['#F28C28', '#C4C4C4', '#1A1A4F'] # Naranja, Azul, Gris
+years = [2022, 2023, 2024]
+
+for i, year in enumerate(years):
+    data_bars = df_temp_counts[df_temp_counts['MaintenanceYear'] == year]
+    fig_cumulative1.add_trace(
+        go.Bar(
+            x=data_bars['MonthYear'],
+            y=data_bars['CumulativeCount'],
+            name=f'Barras {year}',
+            marker=dict(
+                color=color_list_bars[i],  # Asignar colores personalizados
+                opacity=0.6  # Ajustar opacidad de las barras
+            )
+        )
+    )
+
 # Ajustar diseño de la gráfica
-fig_cumulative.update_layout(
+fig_cumulative1.update_layout(
+    barmode='overlay',  # Superponer barras con líneas
     xaxis=dict(
         tickmode='array',
         tickvals=list(range(1, 13)),
@@ -284,12 +307,18 @@ fig_cumulative.update_layout(
 )
 
 # Agregar líneas verticales en los meses clave
-fig_cumulative.add_vline(x=4.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
-fig_cumulative.add_vline(x=8.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
-fig_cumulative.add_vline(x=12.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
+fig_cumulative1.add_vline(x=4.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
+fig_cumulative1.add_vline(x=8.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
+fig_cumulative1.add_vline(x=12.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
 
-# Bordes en las líneas
-fig_cumulative.update_traces(line=dict(width=3))
+# Ajustar bordes en las líneas
+fig_cumulative1.update_traces(
+    selector=dict(type="scatter"),  # Solo líneas
+    line=dict(width=3)
+)
+
+
+fig_cumulative1.show()
 # ================================================================================================
 
 # Gráficas individuales ==========================================================================
@@ -546,8 +575,237 @@ fig_top_costos_jobcode.update_layout(
     bargap=0.2                    # Ajustar el espacio entre barras
 )
 
+# ================================================================================================ Grafica de costos mensualmente por tipo de mantenimineto 
+
+from plotly.subplots import make_subplots
+import plotly.express as px
+
+# Agrupar los datos por mes y tipo de reparación para cada año
+costs_2022 = data_sayer2_2022.groupby(['ClosedMonth', 'JobTypeSummary'])['TOTAL'].sum().reset_index()
+costs_2023 = data_sayer2_2023.groupby(['ClosedMonth', 'JobTypeSummary'])['TOTAL'].sum().reset_index()
+costs_2024 = data_sayer2_2024.groupby(['ClosedMonth', 'JobTypeSummary'])['TOTAL'].sum().reset_index()
+
+# Crear subgráficas
+# Crear subgráficas
+figure_costs = make_subplots(
+    rows=1, cols=3,  # Una fila, tres columnas
+    shared_yaxes=True,  # Compartir eje Y
+    subplot_titles=("Costos totales por mes en 2022", "Costos totales por mes en 2023", "Costos totales por mes en 2024")
+)
+
+# Colores personalizados
+color_list_hex = ['#F28C28', '#C4C4C4','#1A1A4F' ]
+
+# Gráfica para 2022
+fig_2022 = px.bar(
+    costs_2022,
+    x='ClosedMonth',
+    y='TOTAL',
+    color='JobTypeSummary',
+    color_discrete_sequence=color_list_hex,
+    barmode='group',
+    category_orders={'ClosedMonth': list(range(1, 13))}  # Asegurar el orden de los meses
+).update_traces(showlegend=False)
+
+# Gráfica para 2023
+fig_2023 = px.bar(
+    costs_2023,
+    x='ClosedMonth',
+    y='TOTAL',
+    color='JobTypeSummary',
+    color_discrete_sequence=color_list_hex,
+    barmode='group',
+    category_orders={'ClosedMonth': list(range(1, 13))}  # Asegurar el orden de los meses
+).update_traces(showlegend=False)
+
+# Gráfica para 2024
+fig_2024 = px.bar(
+    costs_2024,
+    x='ClosedMonth',
+    y='TOTAL',
+    color='JobTypeSummary',
+    color_discrete_sequence=color_list_hex,
+    barmode='group',
+    category_orders={'ClosedMonth': list(range(1, 13))}  # Asegurar el orden de los meses
+).update_traces(showlegend=True)
+
+# Agregar trazas a las subgráficas
+for trace in fig_2022['data']:
+    figure_costs.add_trace(trace, row=1, col=1)
+
+for trace in fig_2023['data']:
+    figure_costs.add_trace(trace, row=1, col=2)
+
+for trace in fig_2024['data']:
+    figure_costs.add_trace(trace, row=1, col=3)
+
+# Asegurar que todos los meses aparezcan en el eje X como números
+figure_costs.update_xaxes(
+    tickmode='array',
+    tickvals=list(range(1, 13)),  # Valores del eje X de 1 a 12
+    ticktext=list(range(1, 13)),  # Mostrar números del 1 al 12 como etiquetas
+    title_text="Mes",
+    tickangle=0  # Etiquetas horizontales (sin rotación)
+)
+
+# Ajustar el diseño general
+figure_costs.update_layout(
+    title="Costos totales por mes agrupados por tipo de reparación (2022-2024)",
+    yaxis_title="Costos totales ($)",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    height=600,
+    width=1500,
+    margin=dict(t=50, l=50, b=50, r=50),
+)
 
 
+
+# ================================================================================================ Grafica de costos cuatri por tipo de mantenimineto 
+# Agrupar los datos por cuatrimestre y tipo de reparación para cada año
+costs_2022 = data_sayer2_2022.groupby(['OpenedTrimester', 'JobTypeSummary'])['TOTAL'].sum().reset_index()
+costs_2023 = data_sayer2_2023.groupby(['OpenedTrimester', 'JobTypeSummary'])['TOTAL'].sum().reset_index()
+costs_2024 = data_sayer2_2024.groupby(['OpenedTrimester', 'JobTypeSummary'])['TOTAL'].sum().reset_index()
+
+# Crear subgráficas
+fig_cost_cuatri = make_subplots(
+    rows=1, cols=3,  # Una fila, tres columnas
+    shared_yaxes=True,  # Compartir eje Y
+    subplot_titles=("Costos totales por cuatrimestre en 2022", "Costos totales por cuatrimestre en 2023", "Costos totales por cuatrimestre en 2024")
+)
+
+# Colores personalizados
+color_list_hex = ['#F28C28', '#C4C4C4','#1A1A4F' ]
+
+# Gráfica para 2022
+fig_2022 = px.bar(
+    costs_2022,
+    x='OpenedTrimester',
+    y='TOTAL',
+    color='JobTypeSummary',
+    color_discrete_sequence=color_list_hex,
+    barmode='group',
+    category_orders={'OpenedTrimester': list(range(1, 5))}  # Asegurar el orden de los cuatrimestres
+).update_traces(showlegend=False)
+
+# Gráfica para 2023
+fig_2023 = px.bar(
+    costs_2023,
+    x='OpenedTrimester',
+    y='TOTAL',
+    color='JobTypeSummary',
+    color_discrete_sequence=color_list_hex,
+    barmode='group',
+    category_orders={'OpenedTrimester': list(range(1, 5))}  # Asegurar el orden de los cuatrimestres
+).update_traces(showlegend=False)
+
+# Gráfica para 2024
+fig_2024 = px.bar(
+    costs_2024,
+    x='OpenedTrimester',
+    y='TOTAL',
+    color='JobTypeSummary',
+    color_discrete_sequence=color_list_hex,
+    barmode='group',
+    category_orders={'OpenedTrimester': list(range(1, 5))}  # Asegurar el orden de los cuatrimestres
+).update_traces(showlegend=True)
+
+# Agregar trazas a las subgráficas
+for trace in fig_2022['data']:
+    fig_cost_cuatri.add_trace(trace, row=1, col=1)
+
+for trace in fig_2023['data']:
+    fig_cost_cuatri.add_trace(trace, row=1, col=2)
+
+for trace in fig_2024['data']:
+    fig_cost_cuatri.add_trace(trace, row=1, col=3)
+
+# Configurar el eje X para mostrar números de cuatrimestres
+fig_cost_cuatri.update_xaxes(
+    tickmode='array',
+    tickvals=list(range(1, 5)),  # Valores del eje X de 1 a 4
+    ticktext=list(range(1, 5)),  # Mostrar números de cuatrimestres
+    title_text="Cuatrimestre",
+    tickangle=0  # Etiquetas horizontales (sin rotación)
+)
+
+# Ajustar el diseño general
+fig_cost_cuatri.update_layout(
+    title="Costos totales por cuatrimestre agrupados por tipo de reparación (2022-2024)",
+    yaxis_title="Costos totales ($)",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    height=600,
+    width=1500,
+    margin=dict(t=50, l=50, b=50, r=50),
+)
+
+# ================================================================================================ grafica de pie costos por tipo de mantenimiento
+ #Agrupar los datos por tipo de reparación para cada año (suma total por tipo)
+costs_2022_pie = costs_2022.groupby(['JobTypeSummary'])['TOTAL'].sum().reset_index()
+costs_2023_pie = costs_2023.groupby(['JobTypeSummary'])['TOTAL'].sum().reset_index()
+costs_2024_pie = costs_2024.groupby(['JobTypeSummary'])['TOTAL'].sum().reset_index()
+
+# Crear subgráficas para gráficas de pastel
+fig_pie_costs = make_subplots(
+    rows=1, cols=3,  # Una fila, tres columnas
+    specs=[[{'type': 'domain'}, {'type': 'domain'}, {'type': 'domain'}]],  # Tipo "domain" para pie charts
+    subplot_titles=("Distribución de costos en 2022", "Distribución de costos en 2023", "Distribución de costos en 2024")
+)
+
+# Colores personalizados
+color_list_hex = ['#F28C28', '#C4C4C4', '#1A1A4F']
+
+# Gráfica de pastel para 2022
+fig_pie_costs.add_trace(
+    {
+        'type': 'pie',
+        'labels': costs_2022_pie['JobTypeSummary'],
+        'values': costs_2022_pie['TOTAL'],
+        'name': '2022',
+        'marker': {'colors': color_list_hex},
+        'hole': 0.3  # Agregar un pequeño espacio en el centro (opcional)
+    },
+    row=1, col=1
+)
+
+# Gráfica de pastel para 2023
+fig_pie_costs.add_trace(
+    {
+        'type': 'pie',
+        'labels': costs_2023_pie['JobTypeSummary'],
+        'values': costs_2023_pie['TOTAL'],
+        'name': '2023',
+        'marker': {'colors': color_list_hex},
+        'hole': 0.3  # Agregar un pequeño espacio en el centro (opcional)
+    },
+    row=1, col=2
+)
+
+# Gráfica de pastel para 2024
+fig_pie_costs.add_trace(
+    {
+        'type': 'pie',
+        'labels': costs_2024_pie['JobTypeSummary'],
+        'values': costs_2024_pie['TOTAL'],
+        'name': '2024',
+        'marker': {'colors': color_list_hex},
+        'hole': 0.3  # Agregar un pequeño espacio en el centro (opcional)
+    },
+    row=1, col=3
+)
+
+# Ajustar diseño general
+fig_pie_costs.update_layout(
+    title="Distribución porcentual de costos por tipo de mantenimiento (2022-2024)",
+    height=600,
+    width=1500,
+    margin=dict(t=50, l=50, b=50, r=50),
+    showlegend=True  # Mostrar leyenda
+)
+
+# Mostrar la gráfica
+    
 
 # ================================================================================================
 
@@ -711,7 +969,7 @@ figures = {
 
     'figure6' : fig_corrective_histogram,
 
-    'figure7' : fig_cumulative,
+    'figure7' : fig_cumulative1,
 
     'figure8' : fig_hist,
 
@@ -751,7 +1009,19 @@ figures = {
 
     "figure_i1": figure_corrRep_year,
     
-    "figure_i2": fig_cumulative2,
+    "figure_i2": fig_cumulative2,, 
+
+    'figuren13': figure_costs, #Grafica de costos mensualmente por tipo de mantenimineto 
+    
+    'figuren14' : fig_cost_cuatri,
+
+    'figuren15' : fig_pie_costs,
+
+    
+
+    
+
+    
 }
 
 # ============================== Aplicación Dash =================================================
