@@ -552,67 +552,134 @@ fig_top_costos_jobcode.update_layout(
 # ================================================================================================
 
 # Acumulado de costos por mes ===================================================================
-df_temp = data_sayer2.sort_values(by='OpenedDate')
 
-df_temp = data_sayer2.groupby('OpenedDate', as_index=False).agg({'TOTAL': 'sum'})
+df_temp2 = data_sayer2.copy()
+df_temp2['Month'] = df_temp2['OpenedDate'].dt.month
+df_temp2 = df_temp2[['Month', 'MaintenanceYear', 'TOTAL']]
+df_temp2 = df_temp2.groupby(['MaintenanceYear', 'Month'])['TOTAL'].sum().reset_index()
+df_temp2['AcumulativeCosts'] = df_temp2.groupby('MaintenanceYear')['TOTAL'].cumsum()
+df_temp2 = df_temp2[['Month', 'MaintenanceYear', 'AcumulativeCosts']]
 
-# Set 'OpenedDate' as the index
-df_temp = data_sayer2.set_index('OpenedDate')
+df_temp2['MaintenanceYear'] = df_temp2['MaintenanceYear'].astype(str)
 
-# Resample to fill in missing dates and sum 'TOTAL'
-df_temp = df_temp.resample('D').sum()
-
-# Fill missing 'TOTAL' values with the last known value or 0
-df_temp['TOTAL'] = df_temp['TOTAL'].fillna(method='ffill').fillna(0)
-
-# Reset the index to make 'OpenedDate' a column again
-df_temp = df_temp.reset_index()
-
-# Continue with the rest of your code
-df_temp['MonthDay'] = df_temp['OpenedDate'].dt.strftime('%m-%d')
-df_temp['MonthYear'] = df_temp['OpenedDate'].dt.month
-df_temp['MaintenanceYear'] = df_temp['OpenedDate'].dt.year
-
-# Recalculate the cumulative costs
-df_temp['CumulativeCosts'] = df_temp.groupby('MaintenanceYear')['TOTAL'].cumsum()
-
-
+acumCosts2022 = df_temp2[df_temp2['MaintenanceYear'] == '2022']
+acumCosts2023 = df_temp2[df_temp2['MaintenanceYear'] == '2023']
+acumCosts2024 = df_temp2[df_temp2['MaintenanceYear'] == '2024']
 
 # Crear la gráfica con Plotly
-fig_cumulative2 = px.line(
-    df_temp,
-    x='MonthDay',
-    y='CumulativeCosts',
+color_discrete_map = {
+    '2022': 'midnightblue',
+    '2023': 'darkgray',
+    '2024': 'darkorange'
+}
+
+fig_cumulative2 = px.bar(
+    df_temp2,
+    x='Month',
+    y='AcumulativeCosts',
     color='MaintenanceYear',
-    title='Cantidad acumulativa de costos por mes',
     color_discrete_map={
-        2022: 'midnightblue',
-        2023: 'darkgray',
-        2024: 'darkorange'
+        '2022': 'midnightblue',
+        '2023': 'darkgray',
+        '2024': 'darkorange'
     },
-    labels={
-        'MonthYear': 'Mes',
-        'CumulativeCosts': 'Cantidad acumulativa de costos',
-        'MaintenanceYear': 'Año'
-    }
+    title='Costos acumulativos a lo largo de los meses (por año)',
 )
 
-# Ajustar diseño de la gráfica
+# # Configurar diseño adicional
 fig_cumulative2.update_layout(
-    xaxis=dict(
-        tickmode='array',
-        tickvals=list(range(1, 13)),
-        ticktext=[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-        title='Mes'
-    ),
-    yaxis=dict(
-        title='Cantidad acumulativa de costos (MXN)'
-    ),
-    legend_title_text='Año',
+    barmode='group',
+    xaxis=dict(tickmode='array', tickvals=list(range(1, 13)), ticktext=['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']),
+    title_x=0.5,  # Centrar el título
     plot_bgcolor="white",
     paper_bgcolor="white",
 )
+
 # ================================================================================================
+
+# Cantidad de reparaciones correctivas TOTALES por año ==================================================
+colors = ['midnightblue', 'lightgray', 'darkorange']
+custom_cmap = LinearSegmentedColormap.from_list('custom_cmap', list(zip(positions, colors))) 
+# Generar una lista de colores interpolados
+n_colors = len(data_sayer2['UnitID'].unique()) * 2  # Número de unidades únicas
+color_list_rgb = [custom_cmap(i / (n_colors - 1)) for i in range(n_colors)]
+color_list_hex = ['#%02x%02x%02x' % (int(r*255), int(g*255), int(b*255)) for r, g, b, _ in color_list_rgb]
+
+
+data_sayer2['Month'] = data_sayer2['OpenedDate'].dt.month
+
+corrective_byYearMonth = data_sayer2[data_sayer2['JobTypeSummary'] == 'CORRECTIVO']
+
+figure_corrRep_year = make_subplots(
+    rows=1, cols=3,
+    shared_yaxes=True,
+    subplot_titles=("2022", "2023", "2024")
+)
+
+# Gráfica para 2022
+corrective_2022Month = corrective_byYearMonth[corrective_byYearMonth['MaintenanceYear'] == 2022]
+
+figure_corrRep_2022 = px.histogram(
+    corrective_2022Month,
+    x='Month',
+    title="Cantidad de reparaciones por mes en 2022"
+).update_traces(showlegend=False, 
+                marker_color=color_list_hex)
+
+# Gráfica para 2023
+corrective_2023Month = corrective_byYearMonth[corrective_byYearMonth['MaintenanceYear'] == 2023]
+
+figure_corrRep_2023 = px.histogram(
+    corrective_2023Month,
+    x='Month',
+    title="Cantidad de reparaciones por mes en 2023"
+).update_traces(showlegend=False, 
+                marker_color=color_list_hex)
+
+# Gráfica para 2024
+corrective_2024Month = corrective_byYearMonth[corrective_byYearMonth['MaintenanceYear'] == 2024]
+
+figure_corrRep_2024 = px.histogram(
+    corrective_2024Month,
+    x='Month',
+    title="Cantidad de reparaciones por mes en 2024"
+).update_traces(showlegend=False, 
+                marker_color=color_list_hex)
+
+# Agregar las trazas de cada gráfica a las subplots
+for trace in figure_corrRep_2022['data']:
+    figure_corrRep_year.add_trace(trace, row=1, col=1)  # Añadir a la primera columna
+for trace in figure_corrRep_2023['data']:
+    figure_corrRep_year.add_trace(trace, row=1, col=2)  # Añadir a la segunda columna
+for trace in figure_corrRep_2024['data']:
+    figure_corrRep_year.add_trace(trace, row=1, col=3)  # Añadir a la tercera columna
+
+# Configurar diseño de la figura combinada
+figure_corrRep_year.update_layout(
+    title="Cantidad de reparaciones por mes (2022-2024)",
+    xaxis1=dict(
+        tickmode='array',
+        tickvals=list(range(1, 13)),
+        ticktext=['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        title_text="Mes"
+    ),
+    xaxis2=dict(
+        tickmode='array',
+        tickvals=list(range(1, 13)),
+        ticktext=['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        title_text="Mes"
+    ),
+    xaxis3=dict(
+        tickmode='array',
+        tickvals= list(range(1, 13)),
+        ticktext=['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        title_text="Mes"
+    ),
+    yaxis_title="Cantidad de reparaciones",
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    bargap=0.2,
+)
 
 # ============================== Diccionario de figuras ==========================================
 figures = {
@@ -682,7 +749,9 @@ figures = {
 
     "figuren12": fig_top_costos_jobcode,
 
-    "figure14": fig_cumulative2,
+    "figure_i1": figure_corrRep_year,
+    
+    "figure_i2": fig_cumulative2,
 }
 
 # ============================== Aplicación Dash =================================================
