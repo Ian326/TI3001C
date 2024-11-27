@@ -32,15 +32,15 @@ const NavBarJSX = () => {
         <div className="flex grow justify-between sm:justify-end space-x-8 mx-6">
           
           <NavLink to="graphics" style={NavLinkState}>
-            Graphics
+            Gráficos
           </NavLink>
           
           <NavLink to="insights" style={NavLinkState}>
-            Insights
+            Hallazgos
           </NavLink>
           
           <NavLink to="/" style={NavLinkState}>
-            Home
+            Inicio
           </NavLink>
         
         </div>

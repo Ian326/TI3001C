@@ -30,6 +30,54 @@ const GraphicsJSX = () => {
             </div>
             
             <div className="w-11/12 p-8">
+
+                <section id='Costos'>
+
+                    <h1>Costos</h1>
+
+                    <div className='flex flex-col justify-center bg-slate-50'>
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren7' />
+                            </LazyLoad>
+                        </div>
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figure_i2' />
+                            </LazyLoad>
+                        </div>
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren1' />
+                            </LazyLoad>
+                        </div>
+
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren12' />
+                            </LazyLoad>
+                        </div>
+
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren13' />
+                            </LazyLoad>
+                        </div>
+
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren14' />
+                            </LazyLoad>
+                        </div>
+
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren15' />
+                            </LazyLoad>
+                        </div>
+                    </div>
+
+                </section>
                 
                 <section id='Reparaciones'>
                     
@@ -39,6 +87,12 @@ const GraphicsJSX = () => {
                         <div className='flex flex-wrap mt-4 justify-stretch'>
                             <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
                                 <EmbedFigure route='/figure3' />
+                            </LazyLoad>
+                        </div>
+
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figure_i1' />
                             </LazyLoad>
                         </div>
 
@@ -56,19 +110,7 @@ const GraphicsJSX = () => {
 
                         <div className='flex flex-wrap mt-4 justify-stretch'>
                             <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                <EmbedFigure route='/figure6' />
-                            </LazyLoad>
-                        </div>
-
-                        <div className='flex flex-wrap mt-4 justify-stretch'>
-                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
                                 <EmbedFigure route='/figure7' />
-                            </LazyLoad>
-                        </div>
-
-                        <div className='flex flex-wrap mt-4 justify-stretch'>
-                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                <EmbedFigure route='/figure8' />
                             </LazyLoad>
                         </div>
 
@@ -78,54 +120,19 @@ const GraphicsJSX = () => {
 
                 <section id='MTBF'>
 
-                    <h1>MTBF</h1>
+                    <h1>MTBF (Tiempo Entre Reparaciones)</h1>
 
                     <div className='flex flex-col justify-center bg-slate-50'>
-                        <div className='flex justify-center flex-wrap mt-4'>
-
-                            <div className='flex justify-center w-10/12'>
-                                <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                    <EmbedFigure route='/figuren3' />
-                                </LazyLoad>
-                            </div>
-
-                            <div className='flex justify-center w-10/12'>
-                                <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                    <EmbedFigure route='/figuren5' />
-                                </LazyLoad>
-                            </div>
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren3' />
+                            </LazyLoad>
                         </div>
-                    </div>
 
-                </section>
-
-                <section id='Costos'>
-
-                    <h1>Costos</h1>
-
-                    <div className='flex flex-col justify-center bg-slate-50'>
-                        <div className='flex justify-center flex-wrap mt-4'>
-                            <div className='flex justify-center w-10/12'>
-                                <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                    <EmbedFigure route='/figuren7' />
-                                </LazyLoad>
-                            </div>
-                            <div className='flex justify-center w-10/12'>
-                                <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                    <EmbedFigure route='/figuren11' />
-                                </LazyLoad>
-                            </div>
-                            <div className='flex justify-center w-10/12'>
-                                <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                    <EmbedFigure route='/figuren1' />
-                                </LazyLoad>
-                            </div>
-
-                            <div className='flex justify-center w-10/12'>
-                                <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                    <EmbedFigure route='/figuren12' />
-                                </LazyLoad>
-                            </div>
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren5' />
+                            </LazyLoad>
                         </div>
                     </div>
 
@@ -136,20 +143,22 @@ const GraphicsJSX = () => {
                     <h1>Frecuencias de Mantenimiento</h1>
 
                     <div className='flex flex-col justify-center bg-slate-50'>
-                        <div className='flex justify-center flex-wrap mt-4'>
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figure6' />
+                            </LazyLoad>
+                        </div>
 
-                            <div className='flex justify-center w-10/12'>
-                                <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                    <EmbedFigure route='/figuren8' />
-                                </LazyLoad>
-                            </div>
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren8' />
+                            </LazyLoad>
+                        </div>
 
-                            <div className='flex justify-center w-10/12'>
-                                <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
-                                    <EmbedFigure route='/figuren9' />
-                                </LazyLoad>
-                            </div>
-
+                        <div className='flex flex-wrap mt-4 justify-stretch'>
+                            <LazyLoad className='min-h-[360px] min-w-[360px] grow'>
+                                <EmbedFigure route='/figuren9' />
+                            </LazyLoad>
                         </div>
                     </div>
 

@@ -7,12 +7,12 @@ from matplotlib.colors import LinearSegmentedColormap
 import plotly.graph_objects as go
 
 # ============================== Carga de datos ==================================================
-data_sayer = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/data_sayer.csv')
+data_sayer = pd.read_csv('./assets/data_sayer.csv')
 
-data_sayer2 = pd.read_csv('C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/data_sayer2.csv')
-sayer_maint2_byUnit_corrective = pd.read_csv("C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit_corrective.csv")
-sayer_maint2_byUnit = pd.read_csv("C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit.csv")
-sayer_maint2_byUnit_preventive = pd.read_csv("C:/Users/harry/Documents/RETOTDRGIT/TI3001C/website/src/scripts/assets/sayer_maint2_byUnit_preventive.csv")
+data_sayer2 = pd.read_csv('./assets/data_sayer2.csv')
+sayer_maint2_byUnit_corrective = pd.read_csv("./assets/sayer_maint2_byUnit_corrective.csv")
+sayer_maint2_byUnit = pd.read_csv("./assets/sayer_maint2_byUnit.csv")
+sayer_maint2_byUnit_preventive = pd.read_csv("./assets/sayer_maint2_byUnit_preventive.csv")
 
 
 
@@ -277,7 +277,7 @@ years = [2022, 2023, 2024]
 
 for i, year in enumerate(years):
     data_bars = df_temp_counts[df_temp_counts['MaintenanceYear'] == year]
-    fig_cumulative1.add_trace(
+    fig_cumulative.add_trace(
         go.Bar(
             x=data_bars['MonthYear'],
             y=data_bars['CumulativeCount'],
@@ -290,7 +290,7 @@ for i, year in enumerate(years):
     )
 
 # Ajustar diseño de la gráfica
-fig_cumulative1.update_layout(
+fig_cumulative.update_layout(
     barmode='overlay',  # Superponer barras con líneas
     xaxis=dict(
         tickmode='array',
@@ -307,18 +307,16 @@ fig_cumulative1.update_layout(
 )
 
 # Agregar líneas verticales en los meses clave
-fig_cumulative1.add_vline(x=4.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
-fig_cumulative1.add_vline(x=8.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
-fig_cumulative1.add_vline(x=12.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
+fig_cumulative.add_vline(x=4.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
+fig_cumulative.add_vline(x=8.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
+fig_cumulative.add_vline(x=12.5, line_width=1.5, line_dash="dash", line_color="lightgrey")
 
 # Ajustar bordes en las líneas
-fig_cumulative1.update_traces(
+fig_cumulative.update_traces(
     selector=dict(type="scatter"),  # Solo líneas
     line=dict(width=3)
 )
 
-
-fig_cumulative1.show()
 # ================================================================================================
 
 # Gráficas individuales ==========================================================================
@@ -653,10 +651,7 @@ figure_costs.update_layout(
     title="Costos totales por mes agrupados por tipo de reparación (2022-2024)",
     yaxis_title="Costos totales ($)",
     plot_bgcolor="white",
-    paper_bgcolor="white",
-    height=600,
-    width=1500,
-    margin=dict(t=50, l=50, b=50, r=50),
+    paper_bgcolor="white"
 )
 
 
@@ -734,10 +729,7 @@ fig_cost_cuatri.update_layout(
     title="Costos totales por cuatrimestre agrupados por tipo de reparación (2022-2024)",
     yaxis_title="Costos totales ($)",
     plot_bgcolor="white",
-    paper_bgcolor="white",
-    height=600,
-    width=1500,
-    margin=dict(t=50, l=50, b=50, r=50),
+    paper_bgcolor="white"
 )
 
 # ================================================================================================ grafica de pie costos por tipo de mantenimiento
@@ -798,9 +790,6 @@ fig_pie_costs.add_trace(
 # Ajustar diseño general
 fig_pie_costs.update_layout(
     title="Distribución porcentual de costos por tipo de mantenimiento (2022-2024)",
-    height=600,
-    width=1500,
-    margin=dict(t=50, l=50, b=50, r=50),
     showlegend=True  # Mostrar leyenda
 )
 
@@ -969,7 +958,7 @@ figures = {
 
     'figure6' : fig_corrective_histogram,
 
-    'figure7' : fig_cumulative1,
+    'figure7' : fig_cumulative,
 
     'figure8' : fig_hist,
 
@@ -1009,7 +998,7 @@ figures = {
 
     "figure_i1": figure_corrRep_year,
     
-    "figure_i2": fig_cumulative2,, 
+    "figure_i2": fig_cumulative2,
 
     'figuren13': figure_costs, #Grafica de costos mensualmente por tipo de mantenimineto 
     
@@ -1017,11 +1006,6 @@ figures = {
 
     'figuren15' : fig_pie_costs,
 
-    
-
-    
-
-    
 }
 
 # ============================== Aplicación Dash =================================================
