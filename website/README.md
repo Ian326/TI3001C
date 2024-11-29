@@ -110,6 +110,7 @@ Para la ejecucion de este aplicativo, deben iniciarse 2 procesos dentro de este 
 ```
 python graficas.py
 ```
+[Nota] Este proyecto requiere la carga de archivos CSV que contienen datos de mantenimiento de vehículos utilizados en los análisis. Debido al caracter de confidencialidad de los archivos, no son publicos por lo que se tendra que consultar al administrador de este repositorio en caso de necesitarlos.
 
 ### FrontEnd (pagina web)
 
